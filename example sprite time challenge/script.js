@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const practiceMode = document.getElementById("practice-mode");
     const failSafe = document.getElementById("fail-safe");
 
+    const progressBar = document.getElementById("progress-bar");
+    const progressLabel = document.getElementById("progress-label");
+
     const characterExpressions = {
         neutral: "https://via.placeholder.com/150?text=Neutral",
         joyful: "https://via.placeholder.com/150?text=Joyful",
@@ -77,6 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
         },
     ];
 
+    const totalQuestions = questions.length;
+
 
     let currentQuestionIndex = 0;
     let score = 0;
@@ -111,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     quizButton.addEventListener("click", showGameContainer);
 
     function showGameContainer() {
+        //move();
         console.log(quizSelection);
         /*document.addEventListener('focusin', function() {
             console.log('focused: ', document.activeElement)
@@ -124,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         timerDisplay.hidden = true;
 
         
-        startButton.textContent = 'Start Game';
+        startButton.textContent = '1. Start Challenge';
 
         let timer = duration;
         timerDisplay.textContent = `Time Left: ${timer} seconds`;
@@ -150,6 +156,11 @@ document.addEventListener("DOMContentLoaded", () => {
         currentQuestionIndex = 0;
         score = 0;
         correctAnswers = 0;
+        
+        // Update progress bar value and labels
+        progressBar.value = 0; 
+        progressLabel.textContent = `${0}/${totalQuestions} questions answered.`;
+
         // Reset character dialogue and expressions
         updateCharacterExpression("neutral");
     
@@ -288,16 +299,29 @@ function handleAnswer(selectedAnswer) {
         updateCharacterExpression("encouraging");
         console.log(questionData.characterDialogue.wrong);
         currentQuestionIndex++;
+        
     }
     setTimeout(() => {
         if (currentQuestionIndex < questions.length && currentQuestionIndex  > -1) {
             showQuestion();
+            updateProgress();
         } else {
             endGame();
         }
     }, 1000);
-
 }
+
+function updateProgress() {
+    console.log("progess");
+    const progressPercentage = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
+
+    // Update progress bar value
+    progressBar.value = progressPercentage;
+
+    // Update progress label text
+    progressLabel.textContent = `${currentQuestionIndex + 1}/${totalQuestions} questions answered.`;
+}
+
 
 function endGame() {
     questionContainer.hidden = true;
@@ -314,7 +338,7 @@ function endGame() {
     console.log("Practicemode " + practiceMode.checked);
     console.log("Failsafe " + failSafe.checked);
 
-    startButton.textContent = 'Play Again';
+    startButton.textContent = '1. Play Again';
 
     if (practiceMode.checked) {
         score = 90;
@@ -389,5 +413,30 @@ document.addEventListener("keydown", (event) => {
             console.log("Invalid index");
         }
     }
+
+
+
+
 });
+
+var progressCompletionPercentage = 0;
+/*
+function move() {
+  if (progressCompletionPercentage == 0) {
+    progressCompletionPercentage = 1;
+    var elem = document.getElementById("progress-bar-fill");
+    var width = 10;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (width >= 100) {
+        clearInterval(id);
+        progressCompletionPercentage = 0;
+      } else {
+        width++;
+        elem.style.width = width + "%";
+        elem.innerHTML = width + "%";
+      }
+    }
+  }
+}*/
 
