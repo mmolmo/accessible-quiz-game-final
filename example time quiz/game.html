@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timed Quiz Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <h1>Quiz Game</h1>
+        <div id="game-container" role="region" aria-live="polite">
+            <div id="timer">Time Left: <span id="time">30</span>s</div>
+            <div id="question-container" hidden>
+                <h2 id="question"></h2>
+                <ul id="answers"></ul>
+            </div>
+            <div id="feedback" aria-live="assertive"></div>
+            <button id="start-btn">Start Game</button>
+            <div id="results" hidden>
+                <p id="score"></p>
+                <p id="encouragement"></p>
+                <button id="restart-btn">Play Again</button>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+:root {
+    /*--main-bg-color: rgb(255, 0, 0);*/
+    --outline-color: #000000;
+    --button-bg-color: #007bff;
+    --button-hover-bg-color: #0056b3;
+    --button-text-color: #fff;
+    --body-text-color: #333;
+}  
+
+*:focus {
+    outline: 3px solid var(--outline-color);
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.buttons > button{
+    flex: 50%;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+#character-container {
+    background-color: #989898;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#character-img-container{
+}
+
+/* Character styling */
+
+[hidden] {
+    display: none !important;
+}
+
+#character-img {
+    /*object-fit: contain;*/
+    transition: opacity 0.5s ease;
+}
+
+#character-dialogue {
+    font-size: 1rem;
+    font-style: italic;
+    width: 100%;
+}
+
+/* Rewards section */
+#rewards img {
+    max-width: 100px;
+    margin: 5px;
+    display: inline-block;
+}
+
+#rewards p {
+    margin-top: 10px;
+}
+
+/* Existing styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f4f4f4;
+    color: var(--body-text-color);
+    grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+}
+
+/*
+main {
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 50vw;
+    min-width: 300px;
+}*/
+
+header{
+    grid-row: 1;
+  text-align: center;
+  padding: 1rem;
+}
+
+main {
+    grid-row: 2;
+  /*align-items: center;
+  justify-content: center;
+  text-align: center;*/
+    padding: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-radius: 8px;
+    /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
+    width: 90vw;
+    /*height: 90vh;*/
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    grid-row: 3;
+  padding: 1rem;
+  text-align: center;
+}
+
+/*main header:nth-child(1), section:nth-child(6) {
+    background-color: #B8336A;
+    color:#B8336A;
+}*/
+
+#timer {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+#timer-display {
+    font-size: 1.5rem;
+}
+
+/* Rest is the same as before */
+
+#answers {
+    list-style: none;
+    padding: 0;
+}
+
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background: var(--button-bg-color);
+    color: var(--button-text-color);
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    height: 4rem;
+    font-size: 1rem;
+}
+
+button:focus,
+button:hover {
+    background: var(--button-hover-bg-color);
+}
+
+#results {
+    margin-top: 20px;
+}
+
+#whole-quiz-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem; /* Adds spacing between quiz content items */
+    text-align: center;
+  }
+  
+  #game-container {
+    width: 100%;
+    max-width: 600px;
+  }
+  
+
+
+#settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Adds spacing between items */
+    width: 90vw;
+    margin: 0 auto;
+  }
+  
+  .setting {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Adds spacing between buttons */
+
+  /*.buttons.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; 
+}
+.buttons.settings button {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.buttons.settings button:hover {
+  background-color: #bbb;
+}
+*/

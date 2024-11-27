@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible Timer Settings Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .settings-container { max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ddd; }
+        .setting { margin: 15px 0; }
+        .setting label { display: block; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="settings-container">
+    <h2>Timed Challenge Settings</h2>
+    
+    <!-- Toggle Timer -->
+    <div class="setting">
+        <label for="toggle-timer">Enable Timer</label>
+        <input type="checkbox" id="toggle-timer" checked>
+    </div>
+    
+    <!-- Set Custom Timer -->
+    <div class="setting">
+        <label for="timer-duration">Set Timer Duration (seconds)</label>
+        <input type="number" id="timer-duration" min="10" max="300" value="30">
+    </div>
+    
+    <!-- Practice Mode -->
+    <div class="setting">
+        <label for="practice-mode">Enable Practice Mode (no failure)</label>
+        <input type="checkbox" id="practice-mode">
+    </div>
+    
+    <!-- Fail-Safe Mode -->
+    <div class="setting">
+        <label for="fail-safe">Enable Fail-Safe (only affects score)</label>
+        <input type="checkbox" id="fail-safe">
+    </div>
+    
+    <!-- Start Challenge Button -->
+    <div class="setting">
+        <button onclick="startChallenge()">Start Challenge</button>
+    </div>
+    
+    <!-- Timer Display -->
+    <div id="timer-display" style="font-size: 1.5em; font-weight: bold; display: none;">Time Left: 30s</div>
+</div>
+
+<script>
+    let timer;
+    function startChallenge() {
+        const enableTimer = document.getElementById("toggle-timer").checked;
+        const duration = document.getElementById("timer-duration").value;
+        const practiceMode = document.getElementById("practice-mode").checked;
+        const failSafe = document.getElementById("fail-safe").checked;
+
+        if (enableTimer) {
+            document.getElementById("timer-display").style.display = "block";
+            let timeLeft = duration;
+            document.getElementById("timer-display").innerText = `Time Left: ${timeLeft}s`;
+
+            timer = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    document.getElementById("timer-display").innerText = `Time Left: ${timeLeft}s`;
+                } else {
+                    clearInterval(timer);
+                    if (practiceMode) {
+                        alert("Challenge Completed in Practice Mode! No penalties.");
+                    } else if (failSafe) {
+                        alert("Challenge Failed - Progress Unaffected.");
+                    } else {
+                        alert("Challenge Failed!");
+                    }
+                    document.getElementById("timer-display").style.display = "none";
+                }
+            }, 1000);
+        } else {
+            alert("Challenge Started Without Timer");
+        }
+    }
+</script>
+
+</body>
+</html>
