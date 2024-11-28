@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const failSafe = document.getElementById("fail-safe");
 
     const progressBar = document.getElementById("progress-bar");
+    const progressBarContainer = document.getElementById("progress-bar-container");
     const progressLabel = document.getElementById("progress-label");
 
     const characterExpressions = {
@@ -91,14 +92,27 @@ document.addEventListener("DOMContentLoaded", () => {
     let correctAnswers = 0;
     let selectedAnswer;
     
+    const soundfx = {
+        beep: new Audio("./assets/sounds/podcast-smooth-jazz-fashion-stylish-music-249305.mp3"),
+        correctAnswer: new Audio("./assets/sounds/notification-5-140376.mp3"),
+        wrongAnswer: new Audio("./assets/sounds/wrong-answer-129254.mp3"),
+        celebration: new Audio("./assets/sounds/celebration-129255.mp3"),
+        selectAnswer: new Audio("./assets/sounds/video-game-menu-click-sounds2.mp3")
+    };
 
-
+    
     showGameContainer();
     backtoSettingsButton.addEventListener("click", showSettingsMenu);
 
     function showSettingsMenu() {
         console.log (characterContainer);
         characterContainer.hidden = true;
+        progressBarContainer.hidden = true;
+
+        startButton.hidden=true;
+        backtoSettingsButton.hidden=true;
+        quizButton.hidden=false;
+
         quizSelection.hidden = true;
         wholeQuizContainer.hidden = true;
         results.hidden = true;
@@ -123,12 +137,17 @@ document.addEventListener("DOMContentLoaded", () => {
           }, true);*/
         settingsContainer.hidden = true;
         results.hidden = true;
+
+        progressBarContainer.hidden = true;
         
         characterContainer.hidden = false;
         quizSelection.hidden = false;
-        wholeQuizContainer.hidden = false;
+        wholeQuizContainer.hidden = true;
         timerDisplay.hidden = true;
 
+        startButton.hidden=false;
+        backtoSettingsButton.hidden=false;
+        quizButton.hidden=true;
         
         startButton.textContent = '1. Start Challenge';
 
@@ -143,9 +162,11 @@ document.addEventListener("DOMContentLoaded", () => {
     //restartButton.addEventListener("click", startGame);
 
     function startGame() {
+        playSound(soundfx.beep);
         settingsContainer.hidden = true;
         quizSelection.hidden = true;
         results.hidden = true;
+        progressBarContainer.hidden = false;
 
         wholeQuizContainer.hidden=false;
         characterContainer.hidden = false;
@@ -210,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //console.log(duration);
     });
 
-
+    //(reminder to put this into a promise)
     function showQuestion() {
         
         clearInterval(timerInterval);
@@ -221,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(questionData.characterDialogue.intro);
         updateCharacterDialogue(questionData.characterDialogue.intro);
         updateCharacterExpression("neutral");
-        // Nested timeout for the question dialogue
+        // Nested timeout for the question dialogue. this portion is problematic. reminder for future self to fix :)
         setTimeout(() => {
             console.log(questionData.characterDialogue.question);
             updateCharacterDialogue(questionData.characterDialogue.question);
@@ -292,11 +313,13 @@ function handleAnswer(selectedAnswer) {
         updateCharacterDialogue(questionData.characterDialogue.correct);
         console.log(questionData.characterDialogue.correct);
         updateCharacterExpression("joyful");
+        playSound(soundfx.correctAnswer);
         //console.log(updateCharacterExpression("joyful"));
         currentQuestionIndex++;
     } else {
         updateCharacterDialogue(questionData.characterDialogue.wrong);
         updateCharacterExpression("encouraging");
+        playSound(soundfx.wrongAnswer);
         console.log(questionData.characterDialogue.wrong);
         currentQuestionIndex++;
         
@@ -324,10 +347,15 @@ function updateProgress() {
 
 
 function endGame() {
+    
     questionContainer.hidden = true;
     timerDisplay.hidden = true;
     results.hidden = false;
     quizSelection.hidden = false;
+    wholeQuizContainer.hidden = true;
+    progressBarContainer.hidden = true;
+
+    stopSound(soundfx.beep);
 
     const scoreMessage = correctAnswers === questions.length
         ? "Outstanding!"
@@ -375,9 +403,59 @@ function endGame() {
 function updateCharacterDialogue(dialogue) {
     characterDialogue.textContent = dialogue;
 }
+
+function playSound(sound) {
+    //let fx = new Audio(sound);
+	sound.play();
+}
+
+function stopSound(sound) {
+    //let fx = new Audio(sound);
+    sound.pause();
+    sound.currentTime = 0;
+}
+
+
+
+
+
+
 });
 
  
+
+
+document.addEventListener("focus", (event) => {
+    // Allow only number keys (digits 1 through 9)
+    const focusableElements = getFocusableElements();
+    
+    
+
+
+
+});
+
+var progressCompletionPercentage = 0;
+/*
+function move() {
+  if (progressCompletionPercentage == 0) {
+    progressCompletionPercentage = 1;
+    var elem = document.getElementById("progress-bar-fill");
+    var width = 10;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (width >= 100) {
+        clearInterval(id);
+        progressCompletionPercentage = 0;
+      } else {
+        width++;
+        elem.style.width = width + "%";
+        elem.innerHTML = width + "%";
+      }
+    }
+  }
+}*/
+
     // Function to get all focusable elements excluding those in hidden containers
 // Function to get all focusable elements excluding those in hidden containers
 function getFocusableElements() {
@@ -412,31 +490,7 @@ document.addEventListener("keydown", (event) => {
         } else {
             console.log("Invalid index");
         }
+        
     }
-
-
-
 
 });
-
-var progressCompletionPercentage = 0;
-/*
-function move() {
-  if (progressCompletionPercentage == 0) {
-    progressCompletionPercentage = 1;
-    var elem = document.getElementById("progress-bar-fill");
-    var width = 10;
-    var id = setInterval(frame, 10);
-    function frame() {
-      if (width >= 100) {
-        clearInterval(id);
-        progressCompletionPercentage = 0;
-      } else {
-        width++;
-        elem.style.width = width + "%";
-        elem.innerHTML = width + "%";
-      }
-    }
-  }
-}*/
-

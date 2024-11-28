@@ -10,7 +10,6 @@
     <header id="header" aria-labelledby="header" >
         <h1 id="challenge-title" role="heading" aria-level="1" aria-live="polite">Challenge Title</h1>
         
-        
         <div id = "progress-bar-container">
             <label for="progress-bar" id="progress-label">0/3 questions answered.</label>
             <progress id="progress-bar" value="0" max="100">0 %</progress>
@@ -67,17 +66,14 @@
             </div>
             </form>
             
-            <!-- Start Challenge Button -->
-            <div class="setting nav">
-              <button id="toquiz-btn" type="button">Main Menu</button>
-            </div>
+            <button id="toquiz-btn" type="button">Main Menu</button>
           </section>
 
         <section id="character-container" role="region" hidden>
             <div id="character-img-container" aria-hidden="true">
                 <img id="character-img" src="https://via.placeholder.com/150?text=Neutral" alt="Quiz Character Neutral Expression"  role="img">
             </div>
-            <div>
+            <div id = "character-dialogue-container">
                 <p id="character-dialogue" aria-live="polite"></p>
             </div>
         </section>
@@ -110,6 +106,7 @@
         <div class = "buttons settings" role="group">
             <button id="start-btn">1. Start Challenge</button>
             <button id="backto-settings-btn">2. Settings Menu</button>
+            
         </div>
     </nav>
     <script src="script.js"></script>
