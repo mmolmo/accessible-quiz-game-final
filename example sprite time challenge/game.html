@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enhanced Quiz Game</title>
-    <link rel="stylesheet" href="styles/styles-Copy2.css">
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <header id="header" aria-labelledby="header" >
@@ -18,7 +18,7 @@
     <main role="main">
         
 
-        <section id="settings-container" aria-labelledby="settings-title" role="form">
+        <section id="settings-menu-container" aria-labelledby="settings-title" role="form">
             <!--all of the settings buttons-->
             <form role="form">
                 <h2 id="settings-title">Settings Menu</h2>
@@ -66,7 +66,7 @@
             </div>
             </form>
             
-            <button id="toquiz-btn" type="button">Main Menu</button>
+            <button id="return-main-menu-btn" type="button">Main Menu</button>
           </section>
 
         <section id="character-container" role="region" hidden>
@@ -78,10 +78,10 @@
             </div>
         </section>
         
-        <section id="whole-quiz-container" aria-labelledby="whole-quiz-container" role="region">
+        <section id="quiz-menu-container" aria-labelledby="quiz-menu-container" role="region">
         
             <!-- <h2 aria-labelledby="Quiz Menu Title">Quiz Menu</h2>-->
-            <div id="game-container" role="region">
+            <div id="quiz-game-wrapper" role="region">
                 <!--<div id="timer">Time Left: <span id="time">30</span>s</div>-->
                 <div id="timer-display">Time Left: 30 seconds</div>
                 <div id="question-container" hidden>
@@ -94,19 +94,16 @@
             </div>
         </section>
 
-        <section id="results" hidden role="region">
+        <section id="results-menu-container" hidden role="region">
             <p id="score"></p>
             <div id="rewards"></div>
             <!--<button id="restart-btn">Play Again</button>-->
         </section>
-
-       
     </main>
-    <nav id="quiz-selection-container" aria-labelledby="quiz-selection-container" role="region">
+    <nav id="main-navmenu-container" aria-labelledby="main-navmenu-container" role="region">
         <div class = "buttons settings" role="group">
-            <button id="start-btn">1. Start Challenge</button>
-            <button id="backto-settings-btn">2. Settings Menu</button>
-            
+            <button id="start-quiz-btn">1. Start Challenge</button>
+            <button id="return-to-settings-menu-btn">2. Settings Menu</button>
         </div>
     </nav>
     <script src="script.js"></script>

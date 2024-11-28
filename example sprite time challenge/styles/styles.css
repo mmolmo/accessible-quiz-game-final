@@ -84,7 +84,7 @@ main {
 }
 
 /* Settings Container */
-#settings-container {
+#settings-menu-container {
     background-color: var(--background-light);
     border-radius: var(--border-radius);
     padding: 20px;
@@ -126,7 +126,7 @@ button {
     max-width: 300px;
 }
 
-button:hover {
+button:hover, button:focus {
     background-color: var(--secondary-color);
     transform: translateY(-2px);
 }
@@ -186,7 +186,7 @@ button:active {
 }
 
 /* Quiz and Game Container */
-#whole-quiz-container {
+#quiz-menu-container {
     background-color: var(--background-light);
     border-radius: var(--border-radius);
     padding: 20px;
@@ -211,13 +211,13 @@ button:active {
     border: 2px solid var(--primary-color);
 }
 
-.buttons.answers button:hover {
+.buttons.answers button:hover, .buttons.answers button:focus {
     background-color: var(--primary-color);
     color: var(--text-light);
 }
 
 /* Results Section */
-#results {
+#results-menu-container {
     background-color: var(--background-light);
     border-radius: var(--border-radius);
     padding: 20px;
@@ -244,7 +244,7 @@ button:active {
 }
 
 /* Navigation */
-#quiz-selection-container {
+#main-navmenu-container {
     width: 100%;
     max-width: 600px;
     display: flex;
@@ -271,7 +271,7 @@ button:active {
         padding: 10px;
     }
     
-    main, #header, #quiz-selection-container {
+    main, #header, #main-navmenu-container {
         width: 100%;
         max-width: 100%;
     }

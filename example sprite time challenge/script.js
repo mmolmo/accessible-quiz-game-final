@@ -1,43 +1,45 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const settingsContainer = document.getElementById("settings-container");
-    const quizSelection = document.getElementById("quiz-selection-container");
-    //const buttonsSettings = document.getElementsByClassName("buttons-settings")
-    const startButton = document.getElementById("start-btn");
-    const backtoSettingsButton = document.getElementById("backto-settings-btn");
-    const questionContainer = document.getElementById("question-container");
-    
-    const answersList = document.querySelector(".buttons.answers");
-    const timerDisplay = document.getElementById("timer-display");
-    const results = document.getElementById("results");
-    const characterImgContainer = document.getElementById("character-img-container");
-    const characterDialogue = document.getElementById("character-dialogue");
-    const characterContainer = document.getElementById("character-container");
-    const rewardsContainer = document.getElementById("rewards");
-    const wholeQuizContainer = document.getElementById("whole-quiz-container");
-    const quizButton = document.getElementById("toquiz-btn");
-    const timerDuration = document.getElementById("timer-duration");
-
-    const settingsTitle = document.getElementById("settings-title");
-
-    const practiceMode = document.getElementById("practice-mode");
-    const failSafe = document.getElementById("fail-safe");
-
+    //Progress Bar
     const progressBar = document.getElementById("progress-bar");
     const progressBarContainer = document.getElementById("progress-bar-container");
     const progressLabel = document.getElementById("progress-label");
+    
+    //Menus
+    const settingsMenuContainer = document.getElementById("settings-menu-container");
+    const quizMenuContainer = document.getElementById("quiz-menu-container");
+    const mainNavMenu = document.getElementById("main-navmenu-container");
+    
+    //Settings options
+    const settingsTitle = document.getElementById("settings-title");
+    const timerDuration = document.getElementById("timer-duration");
+    const practiceMode = document.getElementById("practice-mode");
+    const failSafe = document.getElementById("fail-safe");
 
+    //Questions
+    const questionContainer = document.getElementById("question-container");
+    const timerDisplay = document.getElementById("timer-display");
+    const answersList = document.querySelector(".buttons.answers");
+
+    //Post Quiz Rewards
+    const resultsMenuContainer = document.getElementById("results-menu-container");
+    const rewardsContainer = document.getElementById("rewards");
+
+    //Character
+    const characterImgContainer = document.getElementById("character-img-container");
+    const characterDialogue = document.getElementById("character-dialogue");
+    const characterContainer = document.getElementById("character-container");
+    
+    //Game Navigation Buttons
+    const startQuizButton = document.getElementById("start-quiz-btn");
+    const returnMainMenuButton = document.getElementById("return-main-menu-btn");
+    const returnToSettingsMenuButton = document.getElementById("return-to-settings-menu-btn");
+
+    //Character Expressions and Greetings
     const characterExpressions = {
         neutral: "https://via.placeholder.com/150?text=Neutral",
         joyful: "https://via.placeholder.com/150?text=Joyful",
         encouraging: "https://via.placeholder.com/150?text=Encouraging",
     };
-
-    const rewards = [
-        { score: 75, image: "https://via.placeholder.com/100?text=Gold+Reward", alt: "Gold Reward" },
-        { score: 60, image: "https://via.placeholder.com/100?text=Silver+Reward", alt: "Silver Reward" },
-        { score: 30, image: "https://via.placeholder.com/100?text=Bronze+Reward", alt: "Bronze Reward" },
-    ];
-
     const characterGreetings = [
         {
             intro: ["Welcome! Are you ready to start the quiz?", "array item 2"],
@@ -45,6 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
+    
+    //Game Questions
     const questions = [
         {
             question: "What is the capital of France?",
@@ -83,7 +87,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const totalQuestions = questions.length;
 
+    //Rewards
+    const rewards = [
+        { score: 75, image: "https://via.placeholder.com/100?text=Gold+Reward", alt: "Gold Reward" },
+        { score: 60, image: "https://via.placeholder.com/100?text=Silver+Reward", alt: "Silver Reward" },
+        { score: 30, image: "https://via.placeholder.com/100?text=Bronze+Reward", alt: "Bronze Reward" },
+    ];
 
+    //Game Variables
     let currentQuestionIndex = 0;
     let score = 0;
     let duration = 30;
@@ -91,7 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let timerInterval;
     let correctAnswers = 0;
     let selectedAnswer;
-    
+
+    //Sounds
     const soundfx = {
         beep: new Audio("./assets/sounds/podcast-smooth-jazz-fashion-stylish-music-249305.mp3"),
         correctAnswer: new Audio("./assets/sounds/notification-5-140376.mp3"),
@@ -101,55 +113,59 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     
-    showGameContainer();
-    backtoSettingsButton.addEventListener("click", showSettingsMenu);
+    //Functions
+    showMainMenu();
+    returnToSettingsMenuButton.addEventListener("click", showSettingsMenu);
 
     function showSettingsMenu() {
         console.log (characterContainer);
+
+        //Hide Character, nav, quiz and results elements
         characterContainer.hidden = true;
         progressBarContainer.hidden = true;
 
-        startButton.hidden=true;
-        backtoSettingsButton.hidden=true;
-        quizButton.hidden=false;
+        mainNavMenu.hidden = true;
+        startQuizButton.hidden=true;
+        returnToSettingsMenuButton.hidden=true;
 
-        quizSelection.hidden = true;
-        wholeQuizContainer.hidden = true;
-        results.hidden = true;
+        quizMenuContainer.hidden = true;
+        resultsMenuContainer.hidden = true;
 
-        settingsContainer.hidden = false;
+        //Show settings elements
+        returnMainMenuButton.hidden=false;
 
-        console.log(quizSelection.hidden);
-        console.log(characterContainer);
-        console.log(settingsTitle);
+        settingsMenuContainer.hidden = false;
+
+        //console.log(mainNavMenu.hidden);
+        //console.log(characterContainer);
+        //console.log(settingsTitle);
 
         settingsTitle.focus();
-        //answersList.hidden=false;
     };
 
-    quizButton.addEventListener("click", showGameContainer);
+    //Shows the Main Menu
+    returnMainMenuButton.addEventListener("click", showMainMenu);
 
-    function showGameContainer() {
-        //move();
-        console.log(quizSelection);
-        /*document.addEventListener('focusin', function() {
-            console.log('focused: ', document.activeElement)
-          }, true);*/
-        settingsContainer.hidden = true;
-        results.hidden = true;
+    function showMainMenu() {
+        console.log(mainNavMenu);
+        
+        //Hide Character, nav, quiz and results elements
+        settingsMenuContainer.hidden = true;
+        resultsMenuContainer.hidden = true;
+        quizMenuContainer.hidden = true;
+        timerDisplay.hidden = true;
+        returnMainMenuButton.hidden=true;
 
         progressBarContainer.hidden = true;
         
         characterContainer.hidden = false;
-        quizSelection.hidden = false;
-        wholeQuizContainer.hidden = true;
-        timerDisplay.hidden = true;
-
-        startButton.hidden=false;
-        backtoSettingsButton.hidden=false;
-        quizButton.hidden=true;
+        mainNavMenu.hidden = false;
         
-        startButton.textContent = '1. Start Challenge';
+        startQuizButton.hidden=false;
+        returnToSettingsMenuButton.hidden=false;
+        
+        
+        startQuizButton.textContent = '1. Start Challenge';
 
         let timer = duration;
         timerDisplay.textContent = `Time Left: ${timer} seconds`;
@@ -158,17 +174,19 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCharacterDialogue(characterGreetings[0].intro[0]);
     }
 
-    startButton.addEventListener("click", startGame);
-    //restartButton.addEventListener("click", startGame);
+    //Starts the quiz and hides certain elements
+    startQuizButton.addEventListener("click", initializeQuiz);
 
-    async function startGame() {
+    async function initializeQuiz() {
         playSound(soundfx.beep);
-        settingsContainer.hidden = true;
-        quizSelection.hidden = true;
-        results.hidden = true;
+
+        settingsMenuContainer.hidden = true;
+        mainNavMenu.hidden = true;
+        resultsMenuContainer.hidden = true;
+
         progressBarContainer.hidden = false;
 
-        wholeQuizContainer.hidden=false;
+        quizMenuContainer.hidden=false;
         characterContainer.hidden = false;
         questionContainer.hidden = false;
         timerDisplay.hidden = false;
@@ -189,17 +207,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
    
-
+    /*
     function updateTimer() {
         timer--;
         timerDisplay.textContent = `Time Left: ${timer} seconds`;
         if (timer <= 0) {
             clearInterval(timerInterval);
             console.log(timer);
-           
         }
-    }
+    }*/
 
+    //Updates the character expression dynamically
     function updateCharacterExpression(expressionKey) {
         const expression = characterExpressions[expressionKey];
         console.log(expression);
@@ -208,6 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     }
 
+    //Updates the timer to account for custom time the player set to complete the quiz
     timerDuration.addEventListener("change", () => {
         duration = parseInt(timerDuration.value);
         //console.log(duration);
@@ -215,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     
-
+    //Runs the quiz if the questions havent finished answering.
     async function runQuiz() {
         try {
             while (currentQuestionIndex < questions.length) {
@@ -231,14 +250,15 @@ document.addEventListener("DOMContentLoaded", () => {
             if (currentQuestionIndex >= questions.length) {
 
                 console.log("All questions answered. Moving to results.");
-                endGame();
+                endQuiz();
             }
         } catch (error) {
             console.error("Quiz error:", error);
-            endGame();
+            endQuiz();
         }
     }
     
+    //Handles the questions and answers promises
     function handleQuestionCycle() {
         return new Promise((resolve, reject) => {
             // Reset timer
@@ -255,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (timer <= 0) {
                     clearInterval(timerIntervalId);
                     console.log("time's up. Moving to results.");
-                    endGame(); // Directly call endGame when timer reaches 0
+                    endQuiz(); // Directly call endQuiz when timer reaches 0
                     resolve('timeUp');
                     return;
                 }
@@ -298,25 +318,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentQuestionIndex >= questions.length) {
             console.log(currentQuestionIndex);
             console.log("All questions answered. Moving to results.");
-            endGame();
+            endQuiz();
             return 'gameEnded';
         }
         
         return 'answered';
     }
     
+    // displays the intro and question dialogue, and any answers in the list
     function showQuestion() {
         const questionData = questions[currentQuestionIndex];
         
-        // Display character intro for the question
+        // Display character intro for the question and updates the progress bar
         updateCharacterDialogue(questionData.characterDialogue.intro);
         updateCharacterExpression("neutral");
-        updateProgress();
+        updateProgressBar();
     
         // Show question after a short delay
         setTimeout(() => {
             updateCharacterDialogue(questionData.characterDialogue.question);
-            
             // Prepare answers
             answersList.innerHTML = "";
             questionData.answers.forEach((answer, index) => {
@@ -344,34 +364,25 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }, 1000);
     }
-    
-/*    function updateProgress() {
-        const progressPercentage = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
-        progressBar.value = progressPercentage;
-        progressLabel.textContent = `${currentQuestionIndex + 1}/${totalQuestions} questions answered.`;
-    }*/
-    
-    
 
-function updateProgress() {
-    console.log("progess");
+//Update Progress Bar
+function updateProgressBar() {
     const progressPercentage = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
-
-    // Update progress bar value
+    // Update progress bar value and text
     progressBar.value = progressPercentage;
-
-    // Update progress label text
     progressLabel.textContent = `Question ${currentQuestionIndex + 1}/${totalQuestions}`;
 }
 
-
-function endGame() {
+//Checks and displays the results on finishing quiz
+function endQuiz() {
     
     questionContainer.hidden = true;
     timerDisplay.hidden = true;
-    results.hidden = false;
-    quizSelection.hidden = false;
-    wholeQuizContainer.hidden = true;
+
+    resultsMenuContainer.hidden = false;
+    mainNavMenu.hidden = false;
+
+    quizMenuContainer.hidden = true;
     progressBarContainer.hidden = true;
 
     stopSound(soundfx.beep);
@@ -382,10 +393,10 @@ function endGame() {
         ? "Good job! You did well!"
         : "Keep trying! Practice makes perfect.";
 
-    console.log("Practicemode " + practiceMode.checked);
-    console.log("Failsafe " + failSafe.checked);
+    //console.log("Practicemode " + practiceMode.checked);
+    //console.log("Failsafe " + failSafe.checked);
 
-    startButton.textContent = '1. Play Again';
+    startQuizButton.textContent = '1. Play Again';
 
     if (practiceMode.checked) {
         score = 90;
@@ -414,18 +425,23 @@ function endGame() {
         rewardsContainer.innerHTML = `<img src="${reward.image}" alt="${reward.alt}">`;
     }
 
-    /*updateCharacterDialogue(
-        `Good game! You got ${correctAnswers} out of ${questions.length} correct and your score is . ${scoreMessage}`
-    );*/
 }
 
+//Update Character Dialogue
 function updateCharacterDialogue(dialogue) {
     characterDialogue.textContent = dialogue;
 }
 
+//Manages sounds
 function playSound(sound) {
     //let fx = new Audio(sound);
 	sound.play();
+}
+
+function playSoundLoop(sound) {
+    //let fx = new Audio(sound);
+	sound.loop = true; 
+    sound.play();
 }
 
 function stopSound(sound) {
@@ -434,10 +450,7 @@ function stopSound(sound) {
     sound.currentTime = 0;
 }
 
-
-
-    // Function to get all focusable elements excluding those in hidden containers
-// Function to get all focusable elements excluding those in hidden containers
+// Get all focusable elements excluding those in hidden containers
 function getFocusableElements() {
     const focusableSelectors = [
         "button",
@@ -455,7 +468,7 @@ function getFocusableElements() {
     });
 }
 
-// Keydown event listener for number selection (focus only)
+// Keydown for selection of elements with number keys(focus only)
 document.addEventListener("keydown", (event) => {
     // Allow only number keys (digits 1 through 9)
     if (event.key >= '1' && event.key <= '9') {
@@ -474,7 +487,6 @@ document.addEventListener("keydown", (event) => {
         console.log("not a number key");
     }
 });
-
 
 });
 
