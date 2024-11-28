@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
     startButton.addEventListener("click", startGame);
     //restartButton.addEventListener("click", startGame);
 
-    function startGame() {
+    async function startGame() {
         playSound(soundfx.beep);
         settingsContainer.hidden = true;
         quizSelection.hidden = true;
@@ -184,26 +184,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Reset character dialogue and expressions
         updateCharacterExpression("neutral");
-    
-    let questionAnsweredPromise = new Promise(function(myResolve, myReject) {
-        // "Producing Code" (May take some time)
         
-        showQuestion();
-
-        //myResolve("Resolved"); // when successful
-        //myReject("Promise error");  // when error
-    });
-        
-        // "Consuming Code" (Must wait for a fulfilled Promise)
-    questionAnsweredPromise.then(
-        function(value) { /* code if successful */ 
-            console.log("resolved");
-            handleAnswer(selectedAnswer);
-        },
-        function(error) { /* code if some error */ 
-            console.log("error");
-        }
-    );
+        runQuiz();
     }
 
    
@@ -214,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (timer <= 0) {
             clearInterval(timerInterval);
             console.log(timer);
-            endGame();
+           
         }
     }
 
@@ -231,108 +213,145 @@ document.addEventListener("DOMContentLoaded", () => {
         //console.log(duration);
     });
 
-    //(reminder to put this into a promise)
-    function showQuestion() {
-        
-        clearInterval(timerInterval);
-        //console.log("whats the time " + timerInterval);
-        const questionData = questions[currentQuestionIndex];
-        // Display character intro for the question
-        
-        console.log(questionData.characterDialogue.intro);
-        updateCharacterDialogue(questionData.characterDialogue.intro);
-        updateCharacterExpression("neutral");
-        // Nested timeout for the question dialogue. this portion is problematic. reminder for future self to fix :)
-        setTimeout(() => {
-            console.log(questionData.characterDialogue.question);
-            updateCharacterDialogue(questionData.characterDialogue.question);
-            timerInterval = setInterval(updateTimer, 1000);
-        }, 1000); // Wait another 1 seconds
-        // Initial 2-second delay
-        
-        //document.getElementById("question").textContent = questionData.question;
-        answersList.innerHTML = "";
+
     
-        questionData.answers.forEach((answer,index) => {
-            const AnswerButton = document.createElement("button");
-            AnswerButton.textContent = answer;
-            AnswerButton.setAttribute("role", "button");
-            AnswerButton.setAttribute("aria-label", `Answer Choice: ${answer}`);
-            AnswerButton.tabIndex = 0;
-    
-            AnswerButton.addEventListener("click", () => {
-                //questionAnsweredPromise.resolve
-                selectedAnswer = index;
-                console.log(selectedAnswer);
-                handleAnswer(selectedAnswer);
-            });
-            AnswerButton.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                    //questionAnsweredPromise.resolve;
-                    selectedAnswer = index;
-                    console.log(selectedAnswer);
-                    handleAnswer(selectedAnswer);
-                } else {
-                    console.log("not the key");
+
+    async function runQuiz() {
+        try {
+            while (currentQuestionIndex < questions.length) {
+                const questionResult = await handleQuestionCycle();
+                
+                // Break the loop if game is ended
+                if (questionResult === 'gameEnded') {
+                    break;
                 }
-            });
-            answersList.appendChild(AnswerButton);
-        });
-        //timerInterval = setInterval(updateTimer, 1000);
-    }
-    
-/*
-function handleArrowNavigation() {
-    const focusableElements = [...document.querySelectorAll("button, li, [tabindex]")];
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-            event.preventDefault();
-            const currentIndex = focusableElements.indexOf(document.activeElement);
-            const nextIndex = event.key === "ArrowDown" ? currentIndex + 1 : currentIndex - 1;
-
-            if (nextIndex >= 0 && nextIndex < focusableElements.length) {
-                focusableElements[nextIndex].focus();
             }
-        }
-    });
-}
-*/
+            
+            // If all questions are answered normally
+            if (currentQuestionIndex >= questions.length) {
 
-function handleAnswer(selectedAnswer) {
-    clearInterval(timerInterval);
-    const questionData = questions[currentQuestionIndex];
-
-    console.log("question:" + currentQuestionIndex + questionData);
-
-    if (selectedAnswer == questionData.correct) {
-        score += timer;
-        //console.log(score);
-        correctAnswers++;
-        console.log(correctAnswers);
-        
-        updateCharacterDialogue(questionData.characterDialogue.correct);
-        console.log(questionData.characterDialogue.correct);
-        updateCharacterExpression("joyful");
-        playSound(soundfx.correctAnswer);
-        //console.log(updateCharacterExpression("joyful"));
-        currentQuestionIndex++;
-    } else {
-        updateCharacterDialogue(questionData.characterDialogue.wrong);
-        updateCharacterExpression("encouraging");
-        playSound(soundfx.wrongAnswer);
-        console.log(questionData.characterDialogue.wrong);
-        currentQuestionIndex++;
-        
-    }
-    setTimeout(() => {
-        if (currentQuestionIndex < questions.length && currentQuestionIndex  > -1) {
-            showQuestion();
-            updateProgress();
-        } else {
+                console.log("All questions answered. Moving to results.");
+                endGame();
+            }
+        } catch (error) {
+            console.error("Quiz error:", error);
             endGame();
         }
-    }, 1000);
-}
+    }
+    
+    function handleQuestionCycle() {
+        return new Promise((resolve, reject) => {
+            // Reset timer
+            timer = duration;
+            // Show current question
+            showQuestion();
+            
+            // Start timer interval
+            const timerIntervalId = setInterval(() => {
+                timer--;
+                timerDisplay.textContent = `Time Left: ${timer} seconds`;
+                
+                // Check if time is up
+                if (timer <= 0) {
+                    clearInterval(timerIntervalId);
+                    console.log("time's up. Moving to results.");
+                    endGame(); // Directly call endGame when timer reaches 0
+                    resolve('timeUp');
+                    return;
+                }
+            }, 1000);
+    
+            // Override handleAnswer to work with Promise
+            const originalHandleAnswer = handleAnswer;
+            handleAnswer = (selectedAnswer) => {
+                clearInterval(timerIntervalId);
+                const result = originalHandleAnswer(selectedAnswer);
+                
+                // If game is ended by handleAnswer
+                if (result === 'gameEnded') {
+                    resolve('gameEnded');
+                } else {
+                    resolve('answered');
+                }
+            };
+        });
+    }
+    function handleAnswer(selectedAnswer) {
+        const questionData = questions[currentQuestionIndex];
+    
+        if (selectedAnswer === questionData.correct) {
+            score += timer;
+            correctAnswers++;
+            
+            updateCharacterDialogue(questionData.characterDialogue.correct);
+            updateCharacterExpression("joyful");
+            playSound(soundfx.correctAnswer);
+        } else {
+            updateCharacterDialogue(questionData.characterDialogue.wrong);
+            updateCharacterExpression("encouraging");
+            playSound(soundfx.wrongAnswer);
+        }
+        
+        currentQuestionIndex++;
+    
+        // Check if game should end
+        if (currentQuestionIndex >= questions.length) {
+            console.log(currentQuestionIndex);
+            console.log("All questions answered. Moving to results.");
+            endGame();
+            return 'gameEnded';
+        }
+        
+        return 'answered';
+    }
+    
+    function showQuestion() {
+        const questionData = questions[currentQuestionIndex];
+        
+        // Display character intro for the question
+        updateCharacterDialogue(questionData.characterDialogue.intro);
+        updateCharacterExpression("neutral");
+        updateProgress();
+    
+        // Show question after a short delay
+        setTimeout(() => {
+            updateCharacterDialogue(questionData.characterDialogue.question);
+            
+            // Prepare answers
+            answersList.innerHTML = "";
+            questionData.answers.forEach((answer, index) => {
+                const answerButton = document.createElement("button");
+                answerButton.textContent = answer;
+                answerButton.setAttribute("role", "button");
+                answerButton.setAttribute("aria-label", `Answer Choice: ${answer}`);
+                answerButton.tabIndex = 0;
+                
+                answerButton.addEventListener("click", () => {
+                    //console.log("click?");
+                    //console.log("index" + index);
+                    handleAnswer(index);
+                });
+                
+                answerButton.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        answerButton.click();
+                        //handleAnswer(index);
+                    }
+                });
+                
+                answersList.appendChild(answerButton);
+            });
+        }, 1000);
+    }
+    
+/*    function updateProgress() {
+        const progressPercentage = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
+        progressBar.value = progressPercentage;
+        progressLabel.textContent = `${currentQuestionIndex + 1}/${totalQuestions} questions answered.`;
+    }*/
+    
+    
 
 function updateProgress() {
     console.log("progess");
@@ -342,7 +361,7 @@ function updateProgress() {
     progressBar.value = progressPercentage;
 
     // Update progress label text
-    progressLabel.textContent = `${currentQuestionIndex + 1}/${totalQuestions} questions answered.`;
+    progressLabel.textContent = `Question ${currentQuestionIndex + 1}/${totalQuestions}`;
 }
 
 
@@ -417,45 +436,6 @@ function stopSound(sound) {
 
 
 
-
-
-
-});
-
- 
-
-
-document.addEventListener("focus", (event) => {
-    // Allow only number keys (digits 1 through 9)
-    const focusableElements = getFocusableElements();
-    
-    
-
-
-
-});
-
-var progressCompletionPercentage = 0;
-/*
-function move() {
-  if (progressCompletionPercentage == 0) {
-    progressCompletionPercentage = 1;
-    var elem = document.getElementById("progress-bar-fill");
-    var width = 10;
-    var id = setInterval(frame, 10);
-    function frame() {
-      if (width >= 100) {
-        clearInterval(id);
-        progressCompletionPercentage = 0;
-      } else {
-        width++;
-        elem.style.width = width + "%";
-        elem.innerHTML = width + "%";
-      }
-    }
-  }
-}*/
-
     // Function to get all focusable elements excluding those in hidden containers
 // Function to get all focusable elements excluding those in hidden containers
 function getFocusableElements() {
@@ -490,7 +470,19 @@ document.addEventListener("keydown", (event) => {
         } else {
             console.log("Invalid index");
         }
-        
+    } else {
+        console.log("not a number key");
     }
+});
 
+
+});
+
+ 
+
+
+document.addEventListener("focus", (event) => {
+    // Allow only number keys (digits 1 through 9)
+    const focusableElements = getFocusableElements();
+    
 });
