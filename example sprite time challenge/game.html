@@ -16,70 +16,95 @@
         </div>
     </header>
     <main role="main">
-        
-
         <section id="settings-menu-container" aria-labelledby="settings-title" role="form">
             <!--all of the settings buttons-->
             <form role="form">
                 <h2 id="settings-title">Settings Menu</h2>
             
-            <!-- Set Custom Timer group -->
-            <div class="setting buttonsgroup">
-                <div class="setting option">
-                    <label for="timer-duration">Set Timer Duration (seconds)</label>
-                    <input type="number" id="timer-duration" min="10" max="300" value="30">
-                </div>      
-            </div>
-            
-            <!-- Checkbox group -->
-            <div class="setting buttonsgroup">
-                <!-- Toggle Timer -->
-                <div class="setting option">
-                    <label for="toggle-timer">Enable Timer</label>
-                    <input type="checkbox" id="toggle-timer" checked role="checkbox">
+                <!-- Set Custom Timer group -->
+                <fieldset class="setting buttonsgroup" role="group">
+                    <legend>Timer Settings</legend>
+                    <div class="setting option">
+                        <label for="timer-duration">Set Timer Duration (seconds)</label>
+                        <input type="number" id="timer-duration" min="10" max="300" value="30">
+                    </div>      
+                </fieldset>
+                
+                <!-- Checkbox group -->
+                <fieldset class="setting buttonsgroup" role="group">
+                    <!-- Toggle Timer -->
+                    <legend>Game Options</legend>
+                    <div class="setting option">
+                        <label for="toggle-timer">Enable Timer</label>
+                        <input type="checkbox" id="toggle-timer" checked role="checkbox">
+                    </div> 
+                    <!-- Practice Mode -->
+                    <div class="setting option" role="group">
+                        <label for="practice-mode">Enable Practice Mode (no failure)</label>
+                        <span id="practice-mode-desc" class="visually-hidden">
+                            Practice mode allows you to play without penalty, helping you learn without losing points.
+                        </span>
+                        <input type="checkbox" id="practice-mode" role="checkbox" aria-describedby="practice-mode-desc">
+                        
+                    </div>
+                    
+                    <!-- Fail-Safe Mode -->
+                    <div class="setting option" role="group">
+                        <label for="fail-safe">Enable Fail-Safe (forgiving score)</label>
+                        <div class="slider-container">
+                            
+                        </div>
+                        <input type="checkbox" id="fail-safe" role="checkbox">
+                    </div>
+                </fieldset>
+                
+                
+                <!-- volume sliders group-->
+                <fieldset class="setting buttonsgroup" role="group">
+                    <legend>Sounds</legend>
+                    <div class="setting option">
+                        <label for="sound-fx-volume-slider">Sound FX Volume</label>
+                        <div class="input-icon-container">
+                            <input type="range" id="sound-fx-volume-slider" role="slider">
+                            <span class="icon volume" aria-hidden="true">
+                                <img src="./assets/icons/volume/volume-1.svg" alt="Medium Volume Icon">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="setting option">
+                        <label for="music-volume-slider">Music Volume</label>
+                        <div class="input-icon-container">
+                            <input type="range" id="music-volume-slider" role="slider">
+                            <span class="icon volume" aria-hidden="true">
+                                <img src="./assets/icons/volume/volume-1.svg" alt="Medium Volume Icon">
+                            </span>
+                        </div>
+                    </div>
+                </fieldset>
+                    
+
+                <div class="form-actions">
+                    <button id="return-main-menu-btn" type="button" aria-controls="settings-menu-container"
+                    aria-label="Return to Main Menu">Main Menu</button>
                 </div>
-              
-              <!-- Practice Mode -->
-              <div class="setting option">
-                <label for="practice-mode">Enable Practice Mode (no failure)</label>
-                <input type="checkbox" id="practice-mode" role="checkbox">
-              </div>
-              
-              <!-- Fail-Safe Mode -->
-              <div class="setting option">
-                <label for="fail-safe">Enable Fail-Safe (forgiving score)</label>
-                <input type="checkbox" id="fail-safe" role="checkbox">
-              </div>
-            </div>
-            
-            
-            <!-- volume sliders group-->
-            <div class="setting buttonsgroup">
-                <div class="setting option">
-                    <label for="sound-fx-volume-slider">Sound FX Volume</label>
-                    <input type="range" id="sound-fx-volume-slider" role="slider">
-                </div>
-                <div class="setting option">
-                    <label for="music-volume-slider">Music Volume</label>
-                    <input type="range" id="music-volume-slider" role="slider">
-                </div>
-            </div>
             </form>
-            
-            <button id="return-main-menu-btn" type="button">Main Menu</button>
-          </section>
+        </section>
 
         <section id="character-container" role="region" hidden>
-            <div id="character-img-container" aria-hidden="true">
-                <img id="character-img" src="https://via.placeholder.com/150?text=Neutral" alt="Quiz Character Neutral Expression"  role="img">
-            </div>
+            <figure id="character-img-container" aria-hidden="true">
+                <img id="character-img" 
+                src="https://via.placeholder.com/150?text=Neutral" 
+                alt="Quiz Character Neutral Expression"  
+                role="img"
+                aria-describedby="character-dialogue">
+            </figure>
             <div id = "character-dialogue-container">
-                <p id="character-dialogue" aria-live="polite"></p>
+                <p id="character-dialogue" aria-live="polite" role="status"></p>
             </div>
         </section>
         
         <section id="quiz-menu-container" aria-labelledby="quiz-menu-container" role="region">
-        
+            <h2>Quiz Menu</h2>
             <!-- <h2 aria-labelledby="Quiz Menu Title">Quiz Menu</h2>-->
             <div id="quiz-game-wrapper" role="region">
                 <!--<div id="timer">Time Left: <span id="time">30</span>s</div>-->
@@ -95,12 +120,23 @@
         </section>
 
         <section id="results-menu-container" hidden role="region">
+            <h2>Rewards Menu</h2>
             <p id="score"></p>
-            <div id="rewards"></div>
+            <figure id="rewards-container" role="contentinfo">
+                <img 
+                id = "rewards-img" 
+                alt = "rewards image" 
+                role="img"
+                aria-describedby="rewards-description"
+                >
+                <figcaption id="rewards-description">
+
+                </figcaption>
+            </figure>
             <!--<button id="restart-btn">Play Again</button>-->
         </section>
     </main>
-    <nav id="main-navmenu-container" aria-labelledby="main-navmenu-container" role="region">
+    <nav id="main-navmenu-container" aria-labelledby="main-navmenu-container" role="region" aria-label="Navigation Menu">
         <div class = "buttons settings" role="group">
             <button id="start-quiz-btn">1. Start Challenge</button>
             <button id="return-to-settings-menu-btn">2. Settings Menu</button>

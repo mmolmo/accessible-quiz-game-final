@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Post Quiz Rewards
     const resultsMenuContainer = document.getElementById("results-menu-container");
-    const rewardsContainer = document.getElementById("rewards");
+    const rewardsContainer = document.getElementById("rewards-container");
 
     //Character
     const characterImgContainer = document.getElementById("character-img-container");
@@ -53,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
             farewell: ["See you next time!", "Until next time!", "array item 2"]
         }
     ];
-
     
     //Game Questions
     const questions = [
@@ -96,9 +95,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Rewards
     const rewards = [
-        { score: 75, image: "./assets/sprites/rewards/1st-place-medal.png", alt: "Gold Reward" },
-        { score: 60, image: "./assets/sprites/rewards/2nd-place-medal.png", alt: "Silver Reward" },
-        { score: 30, image: "./assets/sprites/rewards/3rd-place-medal.png", alt: "Bronze Reward" },
+        { 
+            score: 75, 
+            caption: "Gold Reward",
+            image: "./assets/sprites/rewards/1st-place-medal.png", 
+            alt: "Gold Reward" 
+        },
+        { 
+            score: 60, 
+            caption: "Silver Reward",
+            image: "./assets/sprites/rewards/2nd-place-medal.png", 
+            alt: "Silver Reward" },
+        { 
+            score: 30, 
+            caption: "Bronze Reward",
+            image: "./assets/sprites/rewards/3rd-place-medal.png", 
+            alt: "Bronze Reward" 
+        },
     ];
 
     //Game Variables
@@ -112,21 +125,109 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Sounds
     const soundfx = {
-        beep: new Audio("./assets/sounds/podcast-smooth-jazz-fashion-stylish-music-249305.mp3"),
         correctAnswer: new Audio("./assets/sounds/notification-5-140376.mp3"),
         wrongAnswer: new Audio("./assets/sounds/wrong-answer-129254.mp3"),
         celebration: new Audio("./assets/sounds/celebration-129255.mp3"),
         selectAnswer: new Audio("./assets/sounds/video-game-menu-click-sounds2.mp3")
     };
 
+    const volumeIcons = {
+        off: "./assets/icons/volume/volume-off.svg",
+        low: "./assets/icons/volume/volume-low.svg",
+        mid: "./assets/icons/volume/volume-1.svg",
+        high: "./assets/icons/volume/volume-high.svg",
+    };
+    
+    const volumeIcon2 = [
+        { 
+            volume: .66, 
+            image: "./assets/icons/volume/volume-high.svg", 
+            alt: "High Volume Icon" 
+        },
+        { 
+            volume: .33, 
+            image: "./assets/icons/volume/volume-1.svg", 
+            alt: "Medium Volume Icon" 
+        },
+        { 
+            volume: .1, 
+            image: "./assets/icons/volume/volume-low.svg", 
+            alt: "Low Volume Icon" },
+        { 
+            volume: 0, 
+            image: "./assets/icons/volume/volume-off.svg", 
+            alt: "Off Volume Icon" 
+        },
+    ];
+
+
+    const music = {
+        beep: new Audio("./assets/sounds/podcast-smooth-jazz-fashion-stylish-music-249305.mp3"),
+    };
+
+    let soundFXVolumeSlider = document.querySelector("#sound-fx-volume-slider");
+    soundFXVolumeSlider.addEventListener("change", function(e) {
+        const soundFXVolume = e.currentTarget.value / 100;
+        let soundFXVolumeIcon = e.currentTarget.nextElementSibling;
+        soundfx.correctAnswer.volume = soundFXVolume;
+        soundfx.wrongAnswer.volume = soundFXVolume;
+        console.log("Sound fx volume: " + soundfx.correctAnswer.volume);
+
+        // Determine which icon to display based on volume level
+        let iconPath = volumeIcons.mid; // Default to "off"
+        if (soundFXVolume == 0) {
+            iconPath = volumeIcons.off;
+        } else if (soundFXVolume > 0 && soundFXVolume <= 0.33) {
+            iconPath = volumeIcons.low;
+        } else if (soundFXVolume > 0.33 && soundFXVolume <= 0.66) {
+            iconPath = volumeIcons.mid;
+        } else if (soundFXVolume > 0.66) {
+            iconPath = volumeIcons.high;
+        }
+
+        // Update the icon dynamically
+        soundFXVolumeIcon.innerHTML = `<img src="${iconPath}" alt="Volume icon">`;
+    })
+
+    let musicVolumeSlider = document.querySelector("#music-volume-slider");
+    musicVolumeSlider.addEventListener("change", function(e) {
+        const musicVolume = e.currentTarget.value / 100;
+        let musicVolumeIcon = e.currentTarget.nextElementSibling;
+        // Set the actual volume of the music
+        music.beep.volume = musicVolume;
+        console.log("Music fx volume: " + music.beep.volume);
+
+        // Determine which icon to display based on volume level
+        let iconPath = volumeIcons.mid; // Default to "off"
+
+        /*
+        if (musicVolume == 0) {
+            iconPath = volumeIcons.off;
+        } else if (musicVolume > 0 && musicVolume <= 0.33) {
+            iconPath = volumeIcons.low;
+        } else if (musicVolume > 0.33 && musicVolume <= 0.66) {
+            iconPath = volumeIcons.mid;
+        } else if (musicVolume > 0.66) {
+            iconPath = volumeIcons.high;
+        }*/
+
+/*
+    // Update the icon dynamically
+    musicVolumeIcon.innerHTML = `<img src="${iconPath}" alt="Volume icon">`;*/
+
+        // Find the correct icon by checking the volume thresholds
+        const volumeIcon = volumeIcon2.find(icon => musicVolume >= icon.volume) || volumeIcon2[volumeIcon2.length - 1];
+
+        // Get the span and set the icon dynamically
+        const volumeIconSpan = e.currentTarget.nextElementSibling;
+        volumeIconSpan.innerHTML = `<img src="${volumeIcon.image}" alt="${volumeIcon.alt}" />`;
+    })
     
     //Functions
     showMainMenu();
     returnToSettingsMenuButton.addEventListener("click", showSettingsMenu);
 
     function showSettingsMenu() {
-        console.log (characterContainer);
-
         //Hide Character, nav, quiz and results elements
         characterContainer.hidden = true;
         progressBarContainer.hidden = true;
@@ -147,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //console.log(characterContainer);
         //console.log(settingsTitle);
 
-        settingsTitle.focus();
+        settingsTitle.focus();        
     };
 
     //Shows the Main Menu
@@ -185,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
     startQuizButton.addEventListener("click", initializeQuiz);
 
     async function initializeQuiz() {
-        playSound(soundfx.beep);
+        playSoundLoop(music.beep);
 
         settingsMenuContainer.hidden = true;
         mainNavMenu.hidden = true;
@@ -199,6 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
         timerDisplay.hidden = false;
 
         timer = duration;
+        timerDisplay.textContent = `Time Left: ${timer} seconds`;
         currentQuestionIndex = 0;
         score = 0;
         correctAnswers = 0;
@@ -213,23 +315,11 @@ document.addEventListener("DOMContentLoaded", () => {
         runQuiz();
     }
 
-   
-    /*
-    function updateTimer() {
-        timer--;
-        timerDisplay.textContent = `Time Left: ${timer} seconds`;
-        if (timer <= 0) {
-            clearInterval(timerInterval);
-            console.log(timer);
-        }
-    }*/
-
     //Updates the character expression dynamically
     function updateCharacterExpression(expressionKey) {
         const expression = characterExpressions[expressionKey];
-        console.log(expression);
         characterImgContainer.innerHTML = `
-            <img id="character-img" src="${expression}" alt="Quiz Character ${expressionKey.charAt(0).toUpperCase() + expressionKey.slice(1)} Expression"  role="img">
+            <img id="character-img" src="${expression}" alt="Quiz Character ${expressionKey.charAt(0).toUpperCase() + expressionKey.slice(1)} Expression"  role="img" aria-describedby="character-dialogue">
         `;
     }
 
@@ -239,23 +329,20 @@ document.addEventListener("DOMContentLoaded", () => {
         //console.log(duration);
     });
 
-
-    
     //Runs the quiz if the questions havent finished answering.
     async function runQuiz() {
         try {
             while (currentQuestionIndex < questions.length) {
                 const questionResult = await handleQuestionCycle();
                 
-                // Break the loop if game is ended
-                if (questionResult === 'gameEnded') {
+                // Break the loop if game is ended by time or all questions answered
+                if (questionResult === 'gameEnded' || questionResult === 'timeUp') {
                     break;
                 }
             }
             
             // If all questions are answered normally
             if (currentQuestionIndex >= questions.length) {
-
                 console.log("All questions answered. Moving to results.");
                 endQuiz();
             }
@@ -264,6 +351,8 @@ document.addEventListener("DOMContentLoaded", () => {
             endQuiz();
         }
     }
+
+    
     
     function handleAnswer(selectedAnswer) {
         const questionData = questions[currentQuestionIndex];
@@ -276,6 +365,8 @@ document.addEventListener("DOMContentLoaded", () => {
             updateCharacterExpression("joyful");
         } else {
             playSound(soundfx.wrongAnswer);
+            updateCharacterDialogue(questionData.characterDialogue.wrong);
+            updateCharacterExpression("encouraging");
         }
         
         // Add a delay to allow the player to see the character's reaction
@@ -285,7 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 // Check if game should end
                 if (currentQuestionIndex >= questions.length) {
-                    console.log(currentQuestionIndex);
+                    console.log("Current Question: " + currentQuestionIndex);
                     console.log("All questions answered. Moving to results.");
                     endQuiz();
                     resolve('gameEnded');
@@ -312,10 +403,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 // Check if time is up
                 if (timer <= 0) {
-                    clearInterval(timerIntervalId);
+                    clearInterval(timerIntervalId); // Stop the interval first
                     console.log("time's up. Moving to results.");
-                    endQuiz(); // Directly call endQuiz when timer reaches 0
-                    resolve('timeUp');
+                    resolve('timeUp'); // Resolve before ending quiz
+                    endQuiz(); // Call endQuiz after resolving
                     return;
                 }
             }, 1000);
@@ -396,7 +487,7 @@ function endQuiz() {
     quizMenuContainer.hidden = true;
     progressBarContainer.hidden = true;
 
-    stopSound(soundfx.beep);
+    stopSound(music.beep);
 
     const scoreMessage = correctAnswers === questions.length
         ? "Outstanding!"
@@ -414,8 +505,13 @@ function endQuiz() {
         updateCharacterDialogue(
             `Challenge Completed in Practice Mode! No penalties. \n You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", alt: "No Reward"};
-        rewardsContainer.innerHTML = `<img src="${reward.image}" alt="${reward.alt}">`;
+        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", caption: "No Reward", alt: "No Reward", role: "img"};
+        rewardsContainer.innerHTML = `
+            <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description">
+            <figcaption id="rewards-description">   
+                ${reward.caption}
+            </figcaption>
+        `;
     } else if (failSafe.checked) {
         if (correctAnswers <= 1) {
             score = 30
@@ -425,15 +521,24 @@ function endQuiz() {
         updateCharacterDialogue(
            `Challenge Completed in Failsafe Mode - Progress Unaffected. \n You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", alt: "No Reward"};
-        rewardsContainer.innerHTML = `<img src="${reward.image}" alt="${reward.alt}">`;
+        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", caption: "No Reward", alt: "No Reward", role: "img"};
+        rewardsContainer.innerHTML = `
+            <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description" >
+            <figcaption id="rewards-description">   
+                ${reward.caption}
+            </figcaption>
+        `;
     } else {
         updateCharacterDialogue(
             `Challenge Completed.
             You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", alt: "No Reward"};
-        rewardsContainer.innerHTML = `<img src="${reward.image}" alt="${reward.alt}">`;
+        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", caption: "No Reward", alt: "No Reward", role: "img"};
+        rewardsContainer.innerHTML = `
+            <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description"> 
+            <figcaption id="rewards-description">
+                ${reward.caption}
+            </figcaption>`;
     }
 
 }
@@ -454,11 +559,13 @@ function playSoundLoop(sound) {
 	sound.loop = true; 
     sound.play();
 }
-
 function stopSound(sound) {
     //let fx = new Audio(sound);
     sound.pause();
     sound.currentTime = 0;
+}
+function changeSoundFXVolume(){
+
 }
 
 // Get all focusable elements excluding those in hidden containers
