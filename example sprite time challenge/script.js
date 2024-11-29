@@ -35,11 +35,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const returnToSettingsMenuButton = document.getElementById("return-to-settings-menu-btn");
 
     //Character Expressions and Greetings
-    const characterExpressions = {
+    /*const characterExpressions = {
         neutral: "https://via.placeholder.com/150?text=Neutral",
         joyful: "https://via.placeholder.com/150?text=Joyful",
         encouraging: "https://via.placeholder.com/150?text=Encouraging",
+    };*/
+
+    const characterExpressions = {
+        neutral: "./assets/sprites/smile.png",
+        joyful: "./assets/sprites/party.png",
+        encouraging: "./assets/sprites/huggingface.png",
     };
+
     const characterGreetings = [
         {
             intro: ["Welcome! Are you ready to start the quiz?", "array item 2"],
@@ -89,9 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Rewards
     const rewards = [
-        { score: 75, image: "https://via.placeholder.com/100?text=Gold+Reward", alt: "Gold Reward" },
-        { score: 60, image: "https://via.placeholder.com/100?text=Silver+Reward", alt: "Silver Reward" },
-        { score: 30, image: "https://via.placeholder.com/100?text=Bronze+Reward", alt: "Bronze Reward" },
+        { score: 75, image: "./assets/sprites/rewards/1st-place-medal.png", alt: "Gold Reward" },
+        { score: 60, image: "./assets/sprites/rewards/2nd-place-medal.png", alt: "Silver Reward" },
+        { score: 30, image: "./assets/sprites/rewards/3rd-place-medal.png", alt: "Bronze Reward" },
     ];
 
     //Game Variables
@@ -258,7 +265,39 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     
-    //Handles the questions and answers promises
+    function handleAnswer(selectedAnswer) {
+        const questionData = questions[currentQuestionIndex];
+       
+        if (selectedAnswer === questionData.correct) {
+            score += timer;
+            correctAnswers++;
+            playSound(soundfx.correctAnswer);
+            updateCharacterDialogue(questionData.characterDialogue.correct);
+            updateCharacterExpression("joyful");
+        } else {
+            playSound(soundfx.wrongAnswer);
+        }
+        
+        // Add a delay to allow the player to see the character's reaction
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                currentQuestionIndex++;
+                
+                // Check if game should end
+                if (currentQuestionIndex >= questions.length) {
+                    console.log(currentQuestionIndex);
+                    console.log("All questions answered. Moving to results.");
+                    endQuiz();
+                    resolve('gameEnded');
+                } else {
+                    // Continue with the next question
+                    resolve('answered');
+                }
+            }, 1000); // 1-second delay
+        });
+    }
+    
+    // Modify handleQuestionCycle to handle the Promise return
     function handleQuestionCycle() {
         return new Promise((resolve, reject) => {
             // Reset timer
@@ -283,9 +322,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
             // Override handleAnswer to work with Promise
             const originalHandleAnswer = handleAnswer;
-            handleAnswer = (selectedAnswer) => {
+            handleAnswer = async (selectedAnswer) => {
                 clearInterval(timerIntervalId);
-                const result = originalHandleAnswer(selectedAnswer);
+                const result = await originalHandleAnswer(selectedAnswer);
                 
                 // If game is ended by handleAnswer
                 if (result === 'gameEnded') {
@@ -295,34 +334,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             };
         });
-    }
-    function handleAnswer(selectedAnswer) {
-        const questionData = questions[currentQuestionIndex];
-    
-        if (selectedAnswer === questionData.correct) {
-            score += timer;
-            correctAnswers++;
-            
-            updateCharacterDialogue(questionData.characterDialogue.correct);
-            updateCharacterExpression("joyful");
-            playSound(soundfx.correctAnswer);
-        } else {
-            updateCharacterDialogue(questionData.characterDialogue.wrong);
-            updateCharacterExpression("encouraging");
-            playSound(soundfx.wrongAnswer);
-        }
-        
-        currentQuestionIndex++;
-    
-        // Check if game should end
-        if (currentQuestionIndex >= questions.length) {
-            console.log(currentQuestionIndex);
-            console.log("All questions answered. Moving to results.");
-            endQuiz();
-            return 'gameEnded';
-        }
-        
-        return 'answered';
     }
     
     // displays the intro and question dialogue, and any answers in the list
