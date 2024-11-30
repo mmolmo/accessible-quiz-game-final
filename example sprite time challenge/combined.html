@@ -3,261 +3,564 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Quiz Game</title>
+    <title>Example Time Challenge</title>
     <!--<link rel="stylesheet" href="styles.css">-->
     <style>
       :root {
-    /*--main-bg-color: rgb(255, 0, 0);*/
-    --outline-color: #000000;
-    --button-bg-color: #007bff;
-    --button-hover-bg-color: #0056b3;
-    --button-text-color: #fff;
-    --body-text-color: #333;
-}  
+    --primary-color: #4255f4;
+    --secondary-color: #3044c5;
+    --bg-primary-color: #f6f7fb;
+    --bg-secondary-color: #ffffff;
+    --text-dark: #2c3e50;
+    --text-light: #ffffff;
+    --accent-color: #f33d80;
+    --accent-primary: #f33d80;
+    --accent-secondary: #c20051;
+    --border-radius: 12px;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-*:focus {
-    outline: 3px solid var(--outline-color);
+     /* Gradient and Shadow Styles */
+
+    --gradient-primary: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    --box-shadow-elevation-1: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --box-shadow-elevation-2: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+body {
+    background-color: var(--bg-primary-color);
+    color: var(--text-dark);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+[hidden], .hidden {
+    display: none !important;
+}
+
+/* Header Styling */
+#header {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 20px;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+#challenge-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+#progress-bar-container {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 8px;
+}
+#progress-bar {
+    width: 100%;
+    height: 15px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+#progress-bar::-webkit-progress-bar {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+}
+#progress-bar::-webkit-progress-value {
+    /*background-color: #2c3e50;*/
+    background: var(--text-light);
+    border-radius: 20px;
+}
+
+/* Main Container */
+main {
+    background-color: var(--bg-secondary-color);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: var(--card-shadow);
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+/* Settings Container */
+#settings-menu-container {
+    background-color: var(--bg-primary-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    gap: 15px;
+}
+.setting.option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-secondary-color);
+    border-radius: 8px;
+    padding: 12px;
+    transition: background-color 0.3s ease;
+}
+.setting.option:hover, .setting.option:focus-within {
+    background-color: #f0f3ff;
+}
+.setting.buttonsgroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--bg-secondary-color);
+    border-radius: var(--border-radius);
+    padding: 15px;
+}
+.volume-settings {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.volume-control {
+    margin-bottom: 10px;
+}
+
+.input-icon-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.volume-icon {
+    font-size: 1.5em;
+    color: #666;
+}
+
+input[type="range"] {
+    flex-grow: 1;
+}
+
+span {
+    display: inline-block;
+}
+.icon {
+    height: 24px;
+    width: 24px;
+    
+}
+
+.icon img {
+    height: 24px;
+    width: 24px;
+    object-fit: cover;
+}
+.input-icon-container{
+    display: flex;
+    align-items: center;
+}
+#return-main-menu-btn {
+    align-self: center;
+}
+.form-actions{
+    display: flex;
+    justify-content: center;
+}
+fieldset {
+    border: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+legend {
+    font-weight: bold;
+    color: var(--text-primary-color);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-color);
+    width: 100%;
+    margin-bottom: 0.75rem;
+}
+
+
+
+/* Buttons */
+button {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    width: 100%;
+    max-width: 300px;
+}
+
+button:hover, button:focus {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+.btn {
+    display: flex;
+    align-items: center; /* Vertically align items */
+    justify-content: center; /* Center text */
+    position: relative; /* Allow absolute positioning of icon */
+    padding: 10px 15px;
+    width: 200px; /* Adjust width as needed */
+    height: 50px; /* Adjust height as needed */
+    background-color: #f9f9f9;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-text {
+    flex: 1; /* Take up available space */
+    text-align: center; /* Center text */
+}
+
+.icon.shape {
+    position: absolute;
+    right: 10px; /* Adjust spacing */
+    width: 24px; /* Adjust icon size */
+    height: 24px;
+}
+
 
 .buttons {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
 }
 
-.buttons > button{
-    flex: 50%;
-    gap: 10px;
-    box-sizing: border-box;
-}
-
+/* Character Container */
 #character-container {
-    background-color: #989898;
-    max-width: 100%;
+    background-color: var(--bg-primary-color);
+    border-radius: var(--border-radius);
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
 }
-
-#character-img-container{
+#character-img-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
 }
-
-/* Character styling */
-
-[hidden] {
-    display: none !important;
-}
-
 #character-img {
-    /*object-fit: contain;*/
-    transition: opacity 0.5s ease;
-}
-
-#character-dialogue {
-    font-size: 1rem;
-    font-style: italic;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+#character-dialogue {
+    flex-grow: 1;
+    font-size: 14pt;
+    font-weight: bold;
+    font-style: italic;
+    color: var(--text-dark);
+}
+#character-dialogue-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    width: 75%;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
-/* Rewards section */
-#rewards img {
-    max-width: 100px;
-    margin: 5px;
-    display: inline-block;
+/* Quiz and Game Container */
+#quiz-menu-container {
+    background-color: var(--bg-primary-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    text-align: center;
+}
+#timer-display {
+    color: var(--accent-color);
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 18pt;
+}
+.buttons.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.buttons.answers button {
+    background-color: var(--bg-secondary-color);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+.buttons.answers button:hover, .buttons.answers button:focus {
+    background-color: var(--primary-color);
+    color: var(--text-light);
 }
 
-#rewards p {
-    margin-top: 10px;
+/* Results Section */
+#results-menu-container {
+    background-color: var(--bg-primary-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    text-align: center;
 }
-
-/* Existing styles */
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
+#score {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+#rewards-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: #f4f4f4;
-    color: var(--body-text-color);
+    flex-wrap: wrap;
+    gap: 10px;
 }
-
-/*
-main {
-    text-align: center;
-    background: #fff;
-    padding: 20px;
+#rewards-container img {
+    max-width: 100px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 50vw;
-    min-width: 300px;
-}*/
-
-
-main {
-    text-align: center;
-    padding: 20px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 90vw;
-    min-width: 300px;
+    box-shadow: var(--card-shadow);
 }
 
-
-#timer {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-}
-
-#timer-display {
-    font-size: 1.5rem;
-}
-
-/* Rest is the same as before */
-
-#answers {
-    list-style: none;
-    padding: 0;
-}
-
-
-button {
-    padding: 10px 20px;
-    border: none;
-    background: var(--button-bg-color);
-    color: var(--button-text-color);
-    border-radius: 4px;
-    cursor: pointer;
+/* Navigation */
+#main-navmenu-container {
     width: 100%;
-    height: 4rem;
-    font-size: 1rem;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+.buttons.settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
 }
 
-button:focus,
-button:hover {
-    background: var(--button-hover-bg-color);
+/* Accessibility and Focus States */
+*:focus {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 2px;
 }
 
-#results {
-    margin-top: 20px;
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    main, #header, #main-navmenu-container {
+        width: 100%;
+        max-width: 100%;
+    }
 }
     </style>
 </head>
 <body>
-    <main>
-        <h1 id="app-title" aria-live="polite">Challenge Title</h1>
-        <section id="settings-container" aria-labelledby="Settings Menu" role="region">
-        <h2 id="settings-title" aria-labelledby="Settings Menu title" aria-live="polite">Settings Menu</h2>
+    <header id="header" aria-labelledby="header" >
+        <h1 id="challenge-title" role="heading" aria-level="1" aria-live="polite">Challenge Title</h1>
+        
+        <div id = "progress-bar-container">
+            <label for="progress-bar" id="progress-label">0/3 questions answered.</label>
+            <progress id="progress-bar" value="0" max="100">0 %</progress>
+        </div>
+    </header>
+    <main role="main">
+        <section id="settings-menu-container" aria-labelledby="settings-title" role="form">
+            <!--all of the settings buttons-->
+            <form role="form">
+                <h2 id="settings-title">Settings Menu</h2>
             
-            <!-- Toggle Timer -->
-            <div class="setting">
-                <label for="toggle-timer">Enable Timer</label>
-                <input type="checkbox" id="toggle-timer" checked>
-            </div>
-            
-            <!-- Set Custom Timer -->
-            <div class="setting">
-                <label for="timer-duration">Set Timer Duration (seconds)</label>
-                <input type="number" id="timer-duration" min="10" max="300" value="30">
-            </div>
-            
-            <!-- Practice Mode -->
-            <div class="setting">
-                <label for="practice-mode">Enable Practice Mode (no failure)</label>
-                <input type="checkbox" id="practice-mode">
-            </div>
-            
-            <!-- Fail-Safe Mode -->
-            <div class="setting">
-                <label for="fail-safe">Enable Fail-Safe (forgiving score)</label>
-                <input type="checkbox" id="fail-safe">
-            </div>
-            
-            <!-- Start Challenge Button -->
-            <div class="setting">
-                <button id = "toquiz-btn">Go to Game</button>
-            </div>
+                <!-- Set Custom Timer group -->
+                <fieldset class="setting buttonsgroup" role="group">
+                    <legend>Timer Settings</legend>
+                    <div class="setting option">
+                        <label for="timer-duration">Set Timer Duration (seconds)</label>
+                        <input type="number" id="timer-duration" min="10" max="300" value="30">
+                    </div>      
+                </fieldset>
+                
+                <!-- Checkbox group -->
+                <fieldset class="setting buttonsgroup" role="group">
+                    <!-- Toggle Timer -->
+                    <legend>Game Options</legend>
+                    <div class="setting option">
+                        <label for="toggle-timer">Enable Timer</label>
+                        <input type="checkbox" id="toggle-timer" checked role="checkbox">
+                    </div> 
+                    <!-- Practice Mode -->
+                    <div class="setting option" role="group">
+                        <label for="practice-mode">Enable Practice Mode (no failure)</label>
+                        <span id="practice-mode-desc" class="hidden">
+                            Practice mode allows you to play without penalty, helping you learn without losing points.
+                        </span>
+                        <input type="checkbox" id="practice-mode" role="checkbox" aria-describedby="practice-mode-desc">
+                        
+                    </div>
+                    
+                    <!-- Fail-Safe Mode -->
+                    <div class="setting option" role="group">
+                        <label for="fail-safe">Enable Fail-Safe (forgiving score)</label>
+                        <div class="slider-container">
+                            
+                        </div>
+                        <input type="checkbox" id="fail-safe" role="checkbox">
+                    </div>
+                </fieldset>
+                
+                
+                <!-- volume sliders group-->
+                <fieldset class="setting buttonsgroup" role="group">
+                    <legend>Sounds</legend>
+                    <div class="setting option">
+                        <label for="sound-fx-volume-slider">Sound FX Volume</label>
+                        <div class="input-icon-container">
+                            <input type="range" id="sound-fx-volume-slider" role="slider">
+                            <span class="icon volume" aria-hidden="true">
+                                <img src="./assets/icons/volume/volume-1.svg" alt="Medium Volume Icon">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="setting option">
+                        <label for="music-volume-slider">Music Volume</label>
+                        <div class="input-icon-container">
+                            <input type="range" id="music-volume-slider" role="slider">
+                            <span class="icon volume" aria-hidden="true">
+                                <img src="./assets/icons/volume/volume-1.svg" alt="Medium Volume Icon">
+                            </span>
+                        </div>
+                    </div>
+                </fieldset>
+                    
+
+                <div class="form-actions">
+                    <button id="return-main-menu-btn" type="button" aria-controls="settings-menu-container"
+                    aria-label="Return to Main Menu">Main Menu</button>
+                </div>
+            </form>
         </section>
 
-        <div id="character-container" role="region" hidden>
-            <div id="character-img-container" aria-hidden="true">
-                <img id="character-img" src="https://via.placeholder.com/150?text=Neutral" alt="Quiz Character Neutral Expression">
+        <section id="character-container" role="region" hidden>
+            <figure id="character-img-container" aria-hidden="true">
+                <img id="character-img" 
+                src="https://via.placeholder.com/150?text=Neutral" 
+                alt="Quiz Character Neutral Expression"  
+                role="img"
+                aria-describedby="character-dialogue">
+            </figure>
+            <div id = "character-dialogue-container">
+                <p id="character-dialogue" aria-live="polite" role="status"></p>
             </div>
-            <p id="character-dialogue" aria-live="polite"></p>
-        </div>
+        </section>
         
-        <section id="whole-quiz-container" aria-labelledby="Quiz Menu" role="region">
-        
-        <!-- <h2 aria-labelledby="Quiz Menu Title">Quiz Menu</h2>-->
-        <div id="game-container" role="region" aria-live="polite">
-            <!--<div id="timer">Time Left: <span id="time">30</span>s</div>-->
-            <div id="timer-display">Time Left: 30 seconds</div>
-            <div id="question-container" hidden>
-                
-                <!-- <h2 id="question"></h2>-->
-                <div class="buttons answers" role="group">
+        <section id="quiz-menu-container" aria-labelledby="quiz-menu-container" role="region">
+            <h2>Quiz Menu</h2>
+            <!-- <h2 aria-labelledby="Quiz Menu Title">Quiz Menu</h2>-->
+            <div id="quiz-game-wrapper" role="region">
+                <!--<div id="timer">Time Left: <span id="time">30</span>s</div>-->
+                <div id="timer-display">Time Left: 30 seconds</div>
+                <div id="question-container" hidden>
                     
+                    <!-- <h2 id="question"></h2>-->
+                    <div class="buttons answers" role="group">
+                        
+                    </div>
                 </div>
             </div>
-        </div>
         </section>
 
-        <section id="results" hidden role="region">
+        <section id="results-menu-container" hidden role="region">
+            <h2>Rewards Menu</h2>
             <p id="score"></p>
-            <div id="rewards"></div>
+            <figure id="rewards-container" role="contentinfo">
+                <img 
+                id = "rewards-img" 
+                alt = "rewards image" 
+                role="img"
+                aria-describedby="rewards-description"
+                >
+                <figcaption id="rewards-description">
+
+                </figcaption>
+            </figure>
             <!--<button id="restart-btn">Play Again</button>-->
         </section>
-
-        <section id="quiz-selection-container" aria-labelledby="Quiz Selection Menu" role="region">
-        <div class = "buttons settings" role="group">
-            <button id="start-btn">Start Game</button>
-            <button id="backto-settings-btn">To Settings</button>
-        </div>
-        </section>
     </main>
+    <nav id="main-navmenu-container" aria-labelledby="main-navmenu-container" role="region" aria-label="Navigation Menu">
+        <div class = "buttons settings" role="group">
+            <button id="start-quiz-btn">1. Start Challenge</button>
+            <button id="return-to-settings-menu-btn">2. Settings Menu</button>
+        </div>
+    </nav>
     <!--<script src="script.js"></script>-->
     <script>
- document.addEventListener("DOMContentLoaded", () => {
-    const settingsContainer = document.getElementById("settings-container");
-    const quizSelection = document.getElementById("quiz-selection-container");
-    //const buttonsSettings = document.getElementsByClassName("buttons-settings")
-    const startButton = document.getElementById("start-btn");
-    const backtoSettingsButton = document.getElementById("backto-settings-btn");
-    const questionContainer = document.getElementById("question-container");
+        document.addEventListener("DOMContentLoaded", () => {
+    //Progress Bar
+    const progressBar = document.getElementById("progress-bar");
+    const progressBarContainer = document.getElementById("progress-bar-container");
+    const progressLabel = document.getElementById("progress-label");
     
-    const answersList = document.querySelector(".buttons.answers");
-    const timerDisplay = document.getElementById("timer-display");
-    const results = document.getElementById("results");
-    const characterImgContainer = document.getElementById("character-img-container");
-    const characterDialogue = document.getElementById("character-dialogue");
-    const characterContainer = document.getElementById("character-container");
-    const rewardsContainer = document.getElementById("rewards");
-    const wholeQuizContainer = document.getElementById("whole-quiz-container");
-    const quizButton = document.getElementById("toquiz-btn");
-    const timerDuration = document.getElementById("timer-duration");
-
+    //Menus
+    const settingsMenuContainer = document.getElementById("settings-menu-container");
+    const quizMenuContainer = document.getElementById("quiz-menu-container");
+    const mainNavMenu = document.getElementById("main-navmenu-container");
+    
+    //Settings options
     const settingsTitle = document.getElementById("settings-title");
-
+    const timerDuration = document.getElementById("timer-duration");
     const practiceMode = document.getElementById("practice-mode");
     const failSafe = document.getElementById("fail-safe");
 
-    const characterExpressions = {
+    //Questions
+    const questionContainer = document.getElementById("question-container");
+    const timerDisplay = document.getElementById("timer-display");
+    const answersList = document.querySelector(".buttons.answers");
+
+    //Post Quiz Rewards
+    const resultsMenuContainer = document.getElementById("results-menu-container");
+    const rewardsContainer = document.getElementById("rewards-container");
+
+    //Character
+    const characterImgContainer = document.getElementById("character-img-container");
+    const characterDialogue = document.getElementById("character-dialogue");
+    const characterContainer = document.getElementById("character-container");
+    
+    //Game Navigation Buttons
+    const startQuizButton = document.getElementById("start-quiz-btn");
+    const returnMainMenuButton = document.getElementById("return-main-menu-btn");
+    const returnToSettingsMenuButton = document.getElementById("return-to-settings-menu-btn");
+
+    //Character Expressions and Greetings
+    /*const characterExpressions = {
         neutral: "https://via.placeholder.com/150?text=Neutral",
         joyful: "https://via.placeholder.com/150?text=Joyful",
         encouraging: "https://via.placeholder.com/150?text=Encouraging",
-    };
+    };*/
 
-    const rewards = [
-        { score: 75, image: "https://via.placeholder.com/100?text=Gold+Reward", alt: "Gold Reward" },
-        { score: 60, image: "https://via.placeholder.com/100?text=Silver+Reward", alt: "Silver Reward" },
-        { score: 30, image: "https://via.placeholder.com/100?text=Bronze+Reward", alt: "Bronze Reward" },
-    ];
+    const characterExpressions = {
+        neutral: "./assets/sprites/smile.png",
+        joyful: "./assets/sprites/party.png",
+        encouraging: "./assets/sprites/huggingface.png",
+    };
 
     const characterGreetings = [
         {
@@ -265,44 +568,87 @@ button:hover {
             farewell: ["See you next time!", "Until next time!", "array item 2"]
         }
     ];
+    
+    //Game Questions
+    
 
-    const questions = [
-        {
+    // Game Questions with icons added
+const questions = [
+    {
+        question: "What is the capital of France?",
+        answers: [
+            { text: "Paris", icon: "./assets/icons/answer-choices/diamonds-2.svg" },
+            { text: "Berlin", icon: "./assets/icons/answer-choices/heart.svg" },
+            { text: "Madrid", icon: "./assets/icons/answer-choices/moon-half-right-5.svg" },
+            { text: "Rome", icon: "./assets/icons/answer-choices/star-fat.svg" }
+        ],
+        correct: 0,
+        characterDialogue: {
+            intro: "Let's get started! Here's your first question.",
             question: "What is the capital of France?",
-            answers: ["Paris", "Berlin", "Madrid", "Rome"],
-            correct: 0,
-            characterDialogue: {
-                intro: "Let's get started! Here's your first question.",
-                question: "What is the capital of France?",
-                correct: "Great job! Paris is indeed the capital of France.",
-                wrong: "Not quite. The answer starts with 'P'. Keep going!"
-            }
-        },
-        {
+            correct: "Great job! Paris is indeed the capital of France.",
+            wrong: "Not quite. The answer starts with 'P'. Keep going!"
+        }
+    },
+    {
+        question: "What is 5 + 3?",
+        answers: [
+            { text: "5", icon: "./assets/icons/answer-choices/diamonds-2.svg" },
+            { text: "7", icon: "./assets/icons/answer-choices/heart.svg" },
+            { text: "8", icon: "./assets/icons/answer-choices/moon-half-right-5.svg" },
+            { text: "9", icon: "./assets/icons/answer-choices/star-fat.svg" }
+        ],
+        correct: 2,
+        characterDialogue: {
+            intro: "Ready for the next one? Let's see how you do.",
             question: "What is 5 + 3?",
-            answers: ["5", "7", "8", "9"],
-            correct: 2,
-            characterDialogue: {
-                intro: "Ready for the next one? Let's see how you do.",
-                question: "What is 5 + 3?",
-                correct: "Well done! 8 is the right answer.",
-                wrong: "Close, but no. Hint: It's the sum of 5 and 3. Don't give up!"
-            }
-        },
-        {
+            correct: "Well done! 8 is the right answer.",
+            wrong: "Close, but no. Hint: It's the sum of 5 and 3. Don't give up!"
+        }
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        answers: [
+            { text: "Earth", icon: "./assets/icons/answer-choices/diamonds-2.svg" },
+            { text: "Venus", icon: "./assets/icons/answer-choices/heart.svg" },
+            { text: "Mars", icon: "./assets/icons/answer-choices/moon-half-right-5.svg" },
+            { text: "Jupiter", icon: "./assets/icons/answer-choices/star-fat.svg" }
+        ],
+        correct: 2,
+        characterDialogue: {
+            intro: "Last question! Let's see how you do.",
             question: "Which planet is known as the Red Planet?",
-            answers: ["Earth", "Venus", "Mars", "Jupiter"],
-            correct: 2,
-            characterDialogue: {
-                intro: "Last question! Let's see how you do.",
-                question: "Which planet is known as the Red Planet?",
-                correct: "Well done! Mars is the right answer.",
-                wrong: "Close, but no. Hint: The answer starts with 'M'. Don't give up!"
-            }
+            correct: "Well done! Mars is the right answer.",
+            wrong: "Close, but no. Hint: The answer starts with 'M'. Don't give up!"
+        }
+    }
+];
+
+
+    const totalQuestions = questions.length;
+
+    //Rewards
+    const rewards = [
+        { 
+            score: 75, 
+            caption: "Gold Reward",
+            image: "./assets/sprites/rewards/1st-place-medal.png", 
+            alt: "Gold Reward" 
+        },
+        { 
+            score: 60, 
+            caption: "Silver Reward",
+            image: "./assets/sprites/rewards/2nd-place-medal.png", 
+            alt: "Silver Reward" },
+        { 
+            score: 30, 
+            caption: "Bronze Reward",
+            image: "./assets/sprites/rewards/3rd-place-medal.png", 
+            alt: "Bronze Reward" 
         },
     ];
 
-
+    //Game Variables
     let currentQuestionIndex = 0;
     let score = 0;
     let duration = 30;
@@ -310,46 +656,149 @@ button:hover {
     let timerInterval;
     let correctAnswers = 0;
     let selectedAnswer;
-    
 
-
-    showGameContainer();
-    backtoSettingsButton.addEventListener("click", showSettingsMenu);
-
-    function showSettingsMenu() {
-        console.log (characterContainer);
-        characterContainer.hidden = true;
-        quizSelection.hidden = true;
-        wholeQuizContainer.hidden = true;
-        results.hidden = true;
-
-        settingsContainer.hidden = false;
-
-        console.log(quizSelection.hidden);
-        console.log(characterContainer);
-        console.log(settingsTitle);
-
-        settingsTitle.focus();
-        //answersList.hidden=false;
+    //Sounds
+    const soundfx = {
+        correctAnswer: new Audio("./assets/sounds/notification-5-140376.mp3"),
+        wrongAnswer: new Audio("./assets/sounds/wrong-answer-129254.mp3"),
+        celebration: new Audio("./assets/sounds/celebration-129255.mp3"),
+        selectAnswer: new Audio("./assets/sounds/video-game-menu-click-sounds2.mp3")
     };
 
-    quizButton.addEventListener("click", showGameContainer);
+    const volumeIcons = {
+        off: "./assets/icons/volume/volume-off.svg",
+        low: "./assets/icons/volume/volume-low.svg",
+        mid: "./assets/icons/volume/volume-1.svg",
+        high: "./assets/icons/volume/volume-high.svg",
+    };
+    
+    const volumeIcon2 = [
+        { 
+            volume: .66, 
+            image: "./assets/icons/volume/volume-high.svg", 
+            alt: "High Volume Icon" 
+        },
+        { 
+            volume: .33, 
+            image: "./assets/icons/volume/volume-1.svg", 
+            alt: "Medium Volume Icon" 
+        },
+        { 
+            volume: .1, 
+            image: "./assets/icons/volume/volume-low.svg", 
+            alt: "Low Volume Icon" },
+        { 
+            volume: 0, 
+            image: "./assets/icons/volume/volume-off.svg", 
+            alt: "Off Volume Icon" 
+        },
+    ];
 
-    function showGameContainer() {
-        console.log(quizSelection);
-        /*document.addEventListener('focusin', function() {
-            console.log('focused: ', document.activeElement)
-          }, true);*/
-        settingsContainer.hidden = true;
-        results.hidden = true;
+
+    const music = {
+        beep: new Audio("./assets/sounds/podcast-smooth-jazz-fashion-stylish-music-249305.mp3"),
+    };
+
+    let soundFXVolumeSlider = document.querySelector("#sound-fx-volume-slider");
+    soundFXVolumeSlider.addEventListener("change", function(e) {
+        const soundFXVolume = e.currentTarget.value / 100;
+        let soundFXVolumeIcon = e.currentTarget.nextElementSibling;
+        soundfx.correctAnswer.volume = soundFXVolume;
+        soundfx.wrongAnswer.volume = soundFXVolume;
+        console.log("Sound fx volume: " + soundfx.correctAnswer.volume);
+
+        // Determine which icon to display based on volume level
+        let iconPath = volumeIcons.mid; // Default to "off"
+        if (soundFXVolume == 0) {
+            iconPath = volumeIcons.off;
+        } else if (soundFXVolume > 0 && soundFXVolume <= 0.33) {
+            iconPath = volumeIcons.low;
+        } else if (soundFXVolume > 0.33 && soundFXVolume <= 0.66) {
+            iconPath = volumeIcons.mid;
+        } else if (soundFXVolume > 0.66) {
+            iconPath = volumeIcons.high;
+        }
+
+        // Update the icon dynamically
+        soundFXVolumeIcon.innerHTML = `<img src="${iconPath}" alt="Volume icon">`;
+    })
+
+    let musicVolumeSlider = document.querySelector("#music-volume-slider");
+    musicVolumeSlider.addEventListener("change", function(e) {
+        const musicVolume = e.currentTarget.value / 100;
+        let musicVolumeIcon = e.currentTarget.nextElementSibling;
+        // Set the actual volume of the music
+        music.beep.volume = musicVolume;
+        console.log("Music fx volume: " + music.beep.volume);
+
+        // Determine which icon to display based on volume level
+        let iconPath = volumeIcons.mid; // Default to "off"
+
+        
+
+/*
+    // Update the icon dynamically
+    musicVolumeIcon.innerHTML = `<img src="${iconPath}" alt="Volume icon">`;*/
+
+        // Find the correct icon by checking the volume thresholds
+        const volumeIcon = volumeIcon2.find(icon => musicVolume >= icon.volume) || volumeIcon2[volumeIcon2.length - 1];
+
+        // Get the span and set the icon dynamically
+        const volumeIconSpan = e.currentTarget.nextElementSibling;
+        volumeIconSpan.innerHTML = `<img src="${volumeIcon.image}" alt="${volumeIcon.alt}" />`;
+    })
+    
+    //Functions
+    showMainMenu();
+    returnToSettingsMenuButton.addEventListener("click", showSettingsMenu);
+
+    function showSettingsMenu() {
+        //Hide Character, nav, quiz and results elements
+        characterContainer.hidden = true;
+        progressBarContainer.hidden = true;
+
+        mainNavMenu.hidden = true;
+        startQuizButton.hidden=true;
+        returnToSettingsMenuButton.hidden=true;
+
+        quizMenuContainer.hidden = true;
+        resultsMenuContainer.hidden = true;
+
+        //Show settings elements
+        returnMainMenuButton.hidden=false;
+
+        settingsMenuContainer.hidden = false;
+
+        //console.log(mainNavMenu.hidden);
+        //console.log(characterContainer);
+        //console.log(settingsTitle);
+
+        settingsTitle.focus();        
+    };
+
+    //Shows the Main Menu
+    returnMainMenuButton.addEventListener("click", showMainMenu);
+
+    function showMainMenu() {
+        console.log(mainNavMenu);
+        
+        //Hide Character, nav, quiz and results elements
+        settingsMenuContainer.hidden = true;
+        resultsMenuContainer.hidden = true;
+        quizMenuContainer.hidden = true;
+        timerDisplay.hidden = true;
+        returnMainMenuButton.hidden=true;
+
+        progressBarContainer.hidden = true;
         
         characterContainer.hidden = false;
-        quizSelection.hidden = false;
-        wholeQuizContainer.hidden = false;
-        timerDisplay.hidden = true;
-
+        mainNavMenu.hidden = false;
         
-        startButton.textContent = 'Start Game';
+        startQuizButton.hidden=false;
+        returnToSettingsMenuButton.hidden=false;
+        
+        
+        startQuizButton.textContent = '1. Start Challenge';
 
         let timer = duration;
         timerDisplay.textContent = `Time Left: ${timer} seconds`;
@@ -358,177 +807,214 @@ button:hover {
         updateCharacterDialogue(characterGreetings[0].intro[0]);
     }
 
-    startButton.addEventListener("click", startGame);
-    //restartButton.addEventListener("click", startGame);
+    //Starts the quiz and hides certain elements
+    startQuizButton.addEventListener("click", initializeQuiz);
 
-    function startGame() {
-        settingsContainer.hidden = true;
-        quizSelection.hidden = true;
-        results.hidden = true;
+    async function initializeQuiz() {
+        playSoundLoop(music.beep);
 
-        wholeQuizContainer.hidden=false;
+        settingsMenuContainer.hidden = true;
+        mainNavMenu.hidden = true;
+        resultsMenuContainer.hidden = true;
+
+        progressBarContainer.hidden = false;
+
+        quizMenuContainer.hidden=false;
         characterContainer.hidden = false;
         questionContainer.hidden = false;
         timerDisplay.hidden = false;
 
         timer = duration;
+        timerDisplay.textContent = `Time Left: ${timer} seconds`;
         currentQuestionIndex = 0;
         score = 0;
         correctAnswers = 0;
+        
+        // Update progress bar value and labels
+        progressBar.value = 0; 
+        progressLabel.textContent = `${0}/${totalQuestions} questions answered.`;
+
         // Reset character dialogue and expressions
         updateCharacterExpression("neutral");
-    
-    let questionAnsweredPromise = new Promise(function(myResolve, myReject) {
-        // "Producing Code" (May take some time)
         
-        showQuestion();
-
-        //myResolve("Resolved"); // when successful
-        //myReject("Promise error");  // when error
-    });
-        
-        // "Consuming Code" (Must wait for a fulfilled Promise)
-    questionAnsweredPromise.then(
-        function(value) { /* code if successful */ 
-            console.log("resolved");
-            handleAnswer(selectedAnswer);
-        },
-        function(error) { /* code if some error */ 
-            console.log("error");
-        }
-    );
+        runQuiz();
     }
 
-   
-
-    function updateTimer() {
-        timer--;
-        timerDisplay.textContent = `Time Left: ${timer} seconds`;
-        if (timer <= 0) {
-            clearInterval(timerInterval);
-            console.log(timer);
-            endGame();
-        }
-    }
-
+    //Updates the character expression dynamically
     function updateCharacterExpression(expressionKey) {
         const expression = characterExpressions[expressionKey];
-        console.log(expression);
         characterImgContainer.innerHTML = `
-            <img id="character-img" src="${expression}" alt="Quiz Character ${expressionKey.charAt(0).toUpperCase() + expressionKey.slice(1)} Expression">
+            <img id="character-img" src="${expression}" alt="Quiz Character ${expressionKey.charAt(0).toUpperCase() + expressionKey.slice(1)} Expression"  role="img" aria-describedby="character-dialogue">
         `;
     }
 
+    //Updates the timer to account for custom time the player set to complete the quiz
     timerDuration.addEventListener("change", () => {
         duration = parseInt(timerDuration.value);
         //console.log(duration);
     });
 
+    //Runs the quiz if the questions havent finished answering.
+    async function runQuiz() {
+        try {
+            while (currentQuestionIndex < questions.length) {
+                const questionResult = await handleQuestionCycle();
+                
+                // Break the loop if game is ended by time or all questions answered
+                if (questionResult === 'gameEnded' || questionResult === 'timeUp') {
+                    break;
+                }
+            }
+            
+            // If all questions are answered normally
+            if (currentQuestionIndex >= questions.length) {
+                console.log("All questions answered. Moving to results.");
+                endQuiz();
+            }
+        } catch (error) {
+            console.error("Quiz error:", error);
+            endQuiz();
+        }
+    }
 
-    function showQuestion() {
-        
-        clearInterval(timerInterval);
-        //console.log("whats the time " + timerInterval);
+    
+    
+    function handleAnswer(selectedAnswer) {
         const questionData = questions[currentQuestionIndex];
-        // Display character intro for the question
+       
+        if (selectedAnswer === questionData.correct) {
+            score += timer;
+            correctAnswers++;
+            playSound(soundfx.correctAnswer);
+            updateCharacterDialogue(questionData.characterDialogue.correct);
+            updateCharacterExpression("joyful");
+        } else {
+            playSound(soundfx.wrongAnswer);
+            updateCharacterDialogue(questionData.characterDialogue.wrong);
+            updateCharacterExpression("encouraging");
+        }
         
-        console.log(questionData.characterDialogue.intro);
+        // Add a delay to allow the player to see the character's reaction
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                currentQuestionIndex++;
+                
+                // Check if game should end
+                if (currentQuestionIndex >= questions.length) {
+                    console.log("Current Question: " + currentQuestionIndex);
+                    console.log("All questions answered. Moving to results.");
+                    endQuiz();
+                    resolve('gameEnded');
+                } else {
+                    // Continue with the next question
+                    resolve('answered');
+                }
+            }, 1000); // 1-second delay
+        });
+    }
+    
+    // Modify handleQuestionCycle to handle the Promise return
+    function handleQuestionCycle() {
+        return new Promise((resolve, reject) => {
+            // Reset timer
+            //
+            // Show current question
+            showQuestion();
+            
+            // Start timer interval
+            const timerIntervalId = setInterval(() => {
+                timer--;
+                timerDisplay.textContent = `Time Left: ${timer} seconds`;
+                
+                // Check if time is up
+                if (timer <= 0) {
+                    clearInterval(timerIntervalId); // Stop the interval first
+                    console.log("time's up. Moving to results.");
+                    resolve('timeUp'); // Resolve before ending quiz
+                    endQuiz(); // Call endQuiz after resolving
+                    return;
+                }
+            }, 1000);
+    
+            // Override handleAnswer to work with Promise
+            const originalHandleAnswer = handleAnswer;
+            handleAnswer = async (selectedAnswer) => {
+                clearInterval(timerIntervalId);
+                const result = await originalHandleAnswer(selectedAnswer);
+                
+                // If game is ended by handleAnswer
+                if (result === 'gameEnded') {
+                    resolve('gameEnded');
+                } else {
+                    resolve('answered');
+                }
+            };
+        });
+    }
+
+    // displays the intro and question dialogue, and any answers in the list
+    function showQuestion() {
+        const questionData = questions[currentQuestionIndex];
+    
+        // Display character intro and update progress
         updateCharacterDialogue(questionData.characterDialogue.intro);
         updateCharacterExpression("neutral");
-        // Nested timeout for the question dialogue
+        updateProgressBar();
+    
+        // Show question after a delay
         setTimeout(() => {
-            console.log(questionData.characterDialogue.question);
             updateCharacterDialogue(questionData.characterDialogue.question);
-            timerInterval = setInterval(updateTimer, 1000);
-        }, 1000); // Wait another 1 seconds
-        // Initial 2-second delay
-        
-        //document.getElementById("question").textContent = questionData.question;
-        answersList.innerHTML = "";
     
-        questionData.answers.forEach((answer,index) => {
-            const AnswerButton = document.createElement("button");
-            AnswerButton.textContent = answer;
-            AnswerButton.setAttribute("role", "button");
-            AnswerButton.setAttribute("aria-label", `Answer Choice: ${answer}`);
-            AnswerButton.tabIndex = 0;
+            // Clear and prepare answers
+            answersList.innerHTML = "";
+            questionData.answers.forEach((answer, index) => {
+                const answerButton = document.createElement("button");
+                answerButton.classList.add("btn");
     
-            AnswerButton.addEventListener("click", () => {
-                //questionAnsweredPromise.resolve
-                selectedAnswer = index;
-                console.log(selectedAnswer);
-                handleAnswer(selectedAnswer);
+                // Use innerHTML for both text and image
+                answerButton.innerHTML = `
+                    <span class="btn-text">${answer.text}</span>
+                    <img src="${answer.icon}" alt="Icon for ${answer.text}" class="icon shape-btn" />
+                `;
+                answerButton.setAttribute("role", "button");
+                answerButton.setAttribute("aria-label", `Answer Choice: ${answer.text}`);
+                answerButton.tabIndex = 0;
+    
+                // Event listeners for click and keyboard interaction
+                answerButton.addEventListener("click", () => handleAnswer(index));
+                answerButton.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        answerButton.click();
+                    }
+                });
+    
+                answersList.appendChild(answerButton);
             });
-            AnswerButton.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                    //questionAnsweredPromise.resolve;
-                    selectedAnswer = index;
-                    console.log(selectedAnswer);
-                    handleAnswer(selectedAnswer);
-                } else {
-                    console.log("not the key");
-                }
-            });
-            answersList.appendChild(AnswerButton);
-        });
-        //timerInterval = setInterval(updateTimer, 1000);
+        }, 1000);
     }
     
-/*
-function handleArrowNavigation() {
-    const focusableElements = [...document.querySelectorAll("button, li, [tabindex]")];
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-            event.preventDefault();
-            const currentIndex = focusableElements.indexOf(document.activeElement);
-            const nextIndex = event.key === "ArrowDown" ? currentIndex + 1 : currentIndex - 1;
-
-            if (nextIndex >= 0 && nextIndex < focusableElements.length) {
-                focusableElements[nextIndex].focus();
-            }
-        }
-    });
-}
-*/
-
-function handleAnswer(selectedAnswer) {
-    clearInterval(timerInterval);
-    const questionData = questions[currentQuestionIndex];
-
-    console.log("question:" + currentQuestionIndex + questionData);
-
-    if (selectedAnswer == questionData.correct) {
-        score += timer;
-        //console.log(score);
-        correctAnswers++;
-        console.log(correctAnswers);
-        
-        updateCharacterDialogue(questionData.characterDialogue.correct);
-        console.log(questionData.characterDialogue.correct);
-        updateCharacterExpression("joyful");
-        //console.log(updateCharacterExpression("joyful"));
-        currentQuestionIndex++;
-    } else {
-        updateCharacterDialogue(questionData.characterDialogue.wrong);
-        updateCharacterExpression("encouraging");
-        console.log(questionData.characterDialogue.wrong);
-        currentQuestionIndex++;
-    }
-    setTimeout(() => {
-        if (currentQuestionIndex < questions.length && currentQuestionIndex  > -1) {
-            showQuestion();
-        } else {
-            endGame();
-        }
-    }, 1000);
-
+//Update Progress Bar
+function updateProgressBar() {
+    const progressPercentage = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
+    // Update progress bar value and text
+    progressBar.value = progressPercentage;
+    progressLabel.textContent = `Question ${currentQuestionIndex + 1}/${totalQuestions}`;
 }
 
-function endGame() {
+//Checks and displays the results on finishing quiz
+function endQuiz() {
+    
     questionContainer.hidden = true;
     timerDisplay.hidden = true;
-    results.hidden = false;
-    quizSelection.hidden = false;
+
+    resultsMenuContainer.hidden = false;
+    mainNavMenu.hidden = false;
+
+    quizMenuContainer.hidden = true;
+    progressBarContainer.hidden = true;
+
+    stopSound(music.beep);
 
     const scoreMessage = correctAnswers === questions.length
         ? "Outstanding!"
@@ -536,18 +1022,23 @@ function endGame() {
         ? "Good job! You did well!"
         : "Keep trying! Practice makes perfect.";
 
-    console.log("Practicemode " + practiceMode.checked);
-    console.log("Failsafe " + failSafe.checked);
+    //console.log("Practicemode " + practiceMode.checked);
+    //console.log("Failsafe " + failSafe.checked);
 
-    startButton.textContent = 'Play Again';
+    startQuizButton.textContent = '1. Play Again';
 
     if (practiceMode.checked) {
         score = 90;
         updateCharacterDialogue(
             `Challenge Completed in Practice Mode! No penalties. \n You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", alt: "No Reward"};
-        rewardsContainer.innerHTML = `<img src="${reward.image}" alt="${reward.alt}">`;
+        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", caption: "No Reward", alt: "No Reward", role: "img"};
+        rewardsContainer.innerHTML = `
+            <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description">
+            <figcaption id="rewards-description">   
+                ${reward.caption}
+            </figcaption>
+        `;
     } else if (failSafe.checked) {
         if (correctAnswers <= 1) {
             score = 30
@@ -557,65 +1048,92 @@ function endGame() {
         updateCharacterDialogue(
            `Challenge Completed in Failsafe Mode - Progress Unaffected. \n You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", alt: "No Reward"};
-        rewardsContainer.innerHTML = `<img src="${reward.image}" alt="${reward.alt}">`;
+        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", caption: "No Reward", alt: "No Reward", role: "img"};
+        rewardsContainer.innerHTML = `
+            <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description" >
+            <figcaption id="rewards-description">   
+                ${reward.caption}
+            </figcaption>
+        `;
     } else {
         updateCharacterDialogue(
             `Challenge Completed.
             You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", alt: "No Reward"};
-        rewardsContainer.innerHTML = `<img src="${reward.image}" alt="${reward.alt}">`;
+        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", caption: "No Reward", alt: "No Reward", role: "img"};
+        rewardsContainer.innerHTML = `
+            <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description"> 
+            <figcaption id="rewards-description">
+                ${reward.caption}
+            </figcaption>`;
     }
 
-    /*updateCharacterDialogue(
-        `Good game! You got ${correctAnswers} out of ${questions.length} correct and your score is . ${scoreMessage}`
-    );*/
-}
+    }
 
-function updateCharacterDialogue(dialogue) {
-    characterDialogue.textContent = dialogue;
-}
-});
-
- 
-    // Function to get all focusable elements excluding those in hidden containers
-// Function to get all focusable elements excluding those in hidden containers
-function getFocusableElements() {
-    const focusableSelectors = [
-        "button",
-        "a[href]",
-        "input:not([type='hidden'])",
-        "select",
-        "textarea",
-        "[tabindex]:not([tabindex='-1'])"
-    ];
-    const focusableElements = Array.from(document.querySelectorAll(focusableSelectors.join(',')));
-
-    // Exclude elements in hidden containers
-    return focusableElements.filter(el => {
-        return el.offsetParent !== null; // Ensures the element is not hidden
-    });
-}
-
-// Keydown event listener for number selection (focus only)
-document.addEventListener("keydown", (event) => {
-    // Allow only number keys (digits 1 through 9)
-    if (event.key >= '1' && event.key <= '9') {
-        event.preventDefault(); // Prevent the default behavior (e.g., form submission, or accidental clicks)
-        
-        const numKeyIndex = parseInt(event.key) - 1; // Convert number key to 0-based index
-        const focusableElements = getFocusableElements();
-
-        if (numKeyIndex >= 0 && numKeyIndex < focusableElements.length) {
-            focusableElements[numKeyIndex].focus();
-            console.log(`Focused on: ${focusableElements[numKeyIndex].tagName}`);
-        } else {
-            console.log("Invalid index");
+        //Update Character Dialogue
+        function updateCharacterDialogue(dialogue) {
+            characterDialogue.textContent = dialogue;
         }
-    }
-});
 
+        //Manages sounds
+        function playSound(sound) {
+            //let fx = new Audio(sound);
+            sound.play();
+        }
+
+        function playSoundLoop(sound) {
+            //let fx = new Audio(sound);
+            sound.loop = true; 
+            sound.play();
+        }
+        function stopSound(sound) {
+            //let fx = new Audio(sound);
+            sound.pause();
+            sound.currentTime = 0;
+        }
+        function changeSoundFXVolume(){
+
+        }
+
+        // Get all focusable elements excluding those in hidden containers
+        function getFocusableElements() {
+            const focusableSelectors = [
+                "button",
+                "a[href]",
+                "input:not([type='hidden'])",
+                "select",
+                "textarea",
+                "[tabindex]:not([tabindex='-1'])"
+            ];
+            const focusableElements = Array.from(document.querySelectorAll(focusableSelectors.join(',')));
+
+            // Exclude elements in hidden containers
+            return focusableElements.filter(el => {
+                return el.offsetParent !== null; // Ensures the element is not hidden
+            });
+        }
+
+        // Keydown for selection of elements with number keys(focus only)
+        document.addEventListener("keydown", (event) => {
+            // Allow only number keys (digits 1 through 9)
+            if (event.key >= '1' && event.key <= '9') {
+                event.preventDefault(); // Prevent the default behavior (e.g., form submission, or accidental clicks)
+                
+                const numKeyIndex = parseInt(event.key) - 1; // Convert number key to 0-based index
+                const focusableElements = getFocusableElements();
+
+                if (numKeyIndex >= 0 && numKeyIndex < focusableElements.length) {
+                    focusableElements[numKeyIndex].focus();
+                    console.log(`Focused on: ${focusableElements[numKeyIndex].tagName}`);
+                } else {
+                    console.log("Invalid index");
+                }
+            } else {
+                console.log("not a number key");
+            }
+        });
+
+        });
 
     </script>
 </body>

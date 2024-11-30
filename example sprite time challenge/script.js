@@ -55,41 +55,60 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
     
     //Game Questions
-    const questions = [
-        {
+    
+
+    // Game Questions with icons added
+const questions = [
+    {
+        question: "What is the capital of France?",
+        answers: [
+            { text: "Paris", icon: "./assets/icons/answer-choices/diamonds-2.svg" },
+            { text: "Berlin", icon: "./assets/icons/answer-choices/heart.svg" },
+            { text: "Madrid", icon: "./assets/icons/answer-choices/moon-half-right-5.svg" },
+            { text: "Rome", icon: "./assets/icons/answer-choices/star-fat.svg" }
+        ],
+        correct: 0,
+        characterDialogue: {
+            intro: "Let's get started! Here's your first question.",
             question: "What is the capital of France?",
-            answers: ["Paris", "Berlin", "Madrid", "Rome"],
-            correct: 0,
-            characterDialogue: {
-                intro: "Let's get started! Here's your first question.",
-                question: "What is the capital of France?",
-                correct: "Great job! Paris is indeed the capital of France.",
-                wrong: "Not quite. The answer starts with 'P'. Keep going!"
-            }
-        },
-        {
+            correct: "Great job! Paris is indeed the capital of France.",
+            wrong: "Not quite. The answer starts with 'P'. Keep going!"
+        }
+    },
+    {
+        question: "What is 5 + 3?",
+        answers: [
+            { text: "5", icon: "./assets/icons/answer-choices/diamonds-2.svg" },
+            { text: "7", icon: "./assets/icons/answer-choices/heart.svg" },
+            { text: "8", icon: "./assets/icons/answer-choices/moon-half-right-5.svg" },
+            { text: "9", icon: "./assets/icons/answer-choices/star-fat.svg" }
+        ],
+        correct: 2,
+        characterDialogue: {
+            intro: "Ready for the next one? Let's see how you do.",
             question: "What is 5 + 3?",
-            answers: ["5", "7", "8", "9"],
-            correct: 2,
-            characterDialogue: {
-                intro: "Ready for the next one? Let's see how you do.",
-                question: "What is 5 + 3?",
-                correct: "Well done! 8 is the right answer.",
-                wrong: "Close, but no. Hint: It's the sum of 5 and 3. Don't give up!"
-            }
-        },
-        {
+            correct: "Well done! 8 is the right answer.",
+            wrong: "Close, but no. Hint: It's the sum of 5 and 3. Don't give up!"
+        }
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        answers: [
+            { text: "Earth", icon: "./assets/icons/answer-choices/diamonds-2.svg" },
+            { text: "Venus", icon: "./assets/icons/answer-choices/heart.svg" },
+            { text: "Mars", icon: "./assets/icons/answer-choices/moon-half-right-5.svg" },
+            { text: "Jupiter", icon: "./assets/icons/answer-choices/star-fat.svg" }
+        ],
+        correct: 2,
+        characterDialogue: {
+            intro: "Last question! Let's see how you do.",
             question: "Which planet is known as the Red Planet?",
-            answers: ["Earth", "Venus", "Mars", "Jupiter"],
-            correct: 2,
-            characterDialogue: {
-                intro: "Last question! Let's see how you do.",
-                question: "Which planet is known as the Red Planet?",
-                correct: "Well done! Mars is the right answer.",
-                wrong: "Close, but no. Hint: The answer starts with 'M'. Don't give up!"
-            }
-        },
-    ];
+            correct: "Well done! Mars is the right answer.",
+            wrong: "Close, but no. Hint: The answer starts with 'M'. Don't give up!"
+        }
+    }
+];
+
 
     const totalQuestions = questions.length;
 
@@ -200,16 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Determine which icon to display based on volume level
         let iconPath = volumeIcons.mid; // Default to "off"
 
-        /*
-        if (musicVolume == 0) {
-            iconPath = volumeIcons.off;
-        } else if (musicVolume > 0 && musicVolume <= 0.33) {
-            iconPath = volumeIcons.low;
-        } else if (musicVolume > 0.33 && musicVolume <= 0.66) {
-            iconPath = volumeIcons.mid;
-        } else if (musicVolume > 0.66) {
-            iconPath = volumeIcons.high;
-        }*/
+        
 
 /*
     // Update the icon dynamically
@@ -392,7 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function handleQuestionCycle() {
         return new Promise((resolve, reject) => {
             // Reset timer
-            timer = duration;
+            //
             // Show current question
             showQuestion();
             
@@ -426,47 +436,49 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         });
     }
-    
+
     // displays the intro and question dialogue, and any answers in the list
     function showQuestion() {
         const questionData = questions[currentQuestionIndex];
-        
-        // Display character intro for the question and updates the progress bar
+    
+        // Display character intro and update progress
         updateCharacterDialogue(questionData.characterDialogue.intro);
         updateCharacterExpression("neutral");
         updateProgressBar();
     
-        // Show question after a short delay
+        // Show question after a delay
         setTimeout(() => {
             updateCharacterDialogue(questionData.characterDialogue.question);
-            // Prepare answers
+    
+            // Clear and prepare answers
             answersList.innerHTML = "";
             questionData.answers.forEach((answer, index) => {
                 const answerButton = document.createElement("button");
-                answerButton.textContent = answer;
+                answerButton.classList.add("btn");
+    
+                // Use innerHTML for both text and image
+                answerButton.innerHTML = `
+                    <span class="btn-text">${answer.text}</span>
+                    <img src="${answer.icon}" alt="Icon for ${answer.text}" class="icon shape-btn" />
+                `;
                 answerButton.setAttribute("role", "button");
-                answerButton.setAttribute("aria-label", `Answer Choice: ${answer}`);
+                answerButton.setAttribute("aria-label", `Answer Choice: ${answer.text}`);
                 answerButton.tabIndex = 0;
-                
-                answerButton.addEventListener("click", () => {
-                    //console.log("click?");
-                    //console.log("index" + index);
-                    handleAnswer(index);
-                });
-                
+    
+                // Event listeners for click and keyboard interaction
+                answerButton.addEventListener("click", () => handleAnswer(index));
                 answerButton.addEventListener("keydown", (e) => {
                     if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
                         answerButton.click();
-                        //handleAnswer(index);
                     }
                 });
-                
+    
                 answersList.appendChild(answerButton);
             });
         }, 1000);
     }
-
+    
 //Update Progress Bar
 function updateProgressBar() {
     const progressPercentage = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
@@ -606,13 +618,4 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-});
-
- 
-
-
-document.addEventListener("focus", (event) => {
-    // Allow only number keys (digits 1 through 9)
-    const focusableElements = getFocusableElements();
-    
 });
