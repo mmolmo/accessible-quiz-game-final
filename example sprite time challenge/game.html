@@ -64,20 +64,43 @@
                     <legend>Sounds</legend>
                     <div class="setting option">
                         <label for="sound-fx-volume-slider">Sound FX Volume</label>
-                        <div class="input-icon-container">
-                            <input type="range" id="sound-fx-volume-slider" role="slider">
-                            <span class="icon volume" aria-hidden="true">
-                                <img src="./assets/icons/volume/volume-1.svg" alt="Medium Volume Icon">
-                            </span>
+                        <div class="volume-container">
+                            <div class="input-icon-container">
+                                <input type="range" id="sound-fx-volume-slider" role="slider" min="0" max="100">
+                                <span class="icon volume" aria-hidden="true">
+                                    <img src="./assets/icons/volume/volume-1.svg" alt="Medium Volume Icon">
+                                </span>
+                                <span class="slider-value" id="sound-fx-volume-value">50%</span>
+                            </div>
+                            <div class="input-ind-container">
+                                <span class="volumestart" aria-hidden="true">
+                                    0%
+                                </span>
+                                <span class="volumeend" aria-hidden="true">
+                                    100%
+                                </span>
+                            </div>
                         </div>
+                        
                     </div>
                     <div class="setting option">
                         <label for="music-volume-slider">Music Volume</label>
-                        <div class="input-icon-container">
-                            <input type="range" id="music-volume-slider" role="slider">
-                            <span class="icon volume" aria-hidden="true">
-                                <img src="./assets/icons/volume/volume-1.svg" alt="Medium Volume Icon">
-                            </span>
+                        <div class="volume-container">
+                            <div class="input-icon-container">
+                                <input type="range" id="music-volume-slider" role="slider" min="0" max="100">
+                                <span class="icon volume" aria-hidden="true">
+                                    <img src="./assets/icons/volume/volume-1.svg" alt="Medium Volume Icon">
+                                </span> 
+                                <span class="slider-value" id="music-volume-value">50%</span>
+                            </div>
+                            <div class="input-ind-container">
+                                <span class="volumestart" aria-hidden="true">
+                                    0%
+                                </span>
+                                <span class="volumeend" aria-hidden="true">
+                                    100%
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </fieldset>
@@ -104,23 +127,21 @@
         </section>
         
         <section id="quiz-menu-container" aria-labelledby="quiz-menu-container" role="region">
-            <h2>Quiz Menu</h2>
+            <h2>Quiz</h2>
             <!-- <h2 aria-labelledby="Quiz Menu Title">Quiz Menu</h2>-->
             <div id="quiz-game-wrapper" role="region">
                 <!--<div id="timer">Time Left: <span id="time">30</span>s</div>-->
                 <div id="timer-display">Time Left: 30 seconds</div>
                 <div id="question-container" hidden>
-                    
                     <!-- <h2 id="question"></h2>-->
                     <div class="buttons answers" role="group">
-                        
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="results-menu-container" hidden role="region">
-            <h2>Rewards Menu</h2>
+            <h2>Rewards</h2>
             <p id="score"></p>
             <figure id="rewards-container" role="contentinfo">
                 <img 

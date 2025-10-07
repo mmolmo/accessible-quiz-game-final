@@ -184,7 +184,20 @@ const questions = [
         beep: new Audio("./assets/sounds/podcast-smooth-jazz-fashion-stylish-music-249305.mp3"),
     };
 
+    
+    document.querySelectorAll('input[type="range"]').forEach(slider => {
+  const updateGradient = () => {
+        const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.background = `linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) ${val}%, var(--bg-secondary-color) ${val}%, var(--bg-secondary-color) 100%)`;
+    };
+    slider.addEventListener('input', updateGradient);
+    updateGradient();
+    });
+
+
+
     let soundFXVolumeSlider = document.querySelector("#sound-fx-volume-slider");
+    const valueDisplay = document.getElementById('sound-fx-volume-value');
     soundFXVolumeSlider.addEventListener("change", function(e) {
         const soundFXVolume = e.currentTarget.value / 100;
         let soundFXVolumeIcon = e.currentTarget.nextElementSibling;
@@ -206,9 +219,15 @@ const questions = [
 
         // Update the icon dynamically
         soundFXVolumeIcon.innerHTML = `<img src="${iconPath}" alt="Volume icon">`;
+
+        const val = soundFXVolumeSlider.value;
+        valueDisplay.textContent = `${val}%`;
+
+        valueDisplay.classList.add('active');
     })
 
     let musicVolumeSlider = document.querySelector("#music-volume-slider");
+    const musicvalueDisplay = document.getElementById('music-volume-value');
     musicVolumeSlider.addEventListener("change", function(e) {
         const musicVolume = e.currentTarget.value / 100;
         let musicVolumeIcon = e.currentTarget.nextElementSibling;
@@ -231,6 +250,11 @@ const questions = [
         // Get the span and set the icon dynamically
         const volumeIconSpan = e.currentTarget.nextElementSibling;
         volumeIconSpan.innerHTML = `<img src="${volumeIcon.image}" alt="${volumeIcon.alt}" />`;
+    
+        const val = musicVolumeSlider.value;
+        musicvalueDisplay.textContent = `${val}%`;
+
+        musicvalueDisplay.classList.add('active');
     })
     
     //Functions
