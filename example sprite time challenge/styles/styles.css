@@ -398,7 +398,7 @@ button:active {
     margin-bottom: 15px;
     font-size: 18pt;
 }
-.buttons.answers {
+/* .buttons.answers {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -407,13 +407,65 @@ button:active {
     background-color: var(--bg-primary-color);
     color: var(--primary-color);
     border: 2px solid var(--primary-color);
+    width: 50%;
+    padding: 2rem;
 }
+
+
 .buttons.answers button:hover, .buttons.answers button:focus {
     background-color: var(--primary-color);
     color: var(--text-light);
     border-color:  var(--secondary-color);
     font-weight: bold;
+} */
+
+
+.buttons.answers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-direction: row; /* <-- This is the key fix */
 }
+
+.buttons.answers button {
+    flex: 1 1 calc(50% - 10px); /* 2 buttons per row accounting for gap */
+    padding: 2rem;
+    color: var(--text-light);
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Example colors for each button */
+.buttons.answers button:nth-child(1) {
+    background-color: #4CAF50; /* Green */
+}
+.buttons.answers button:nth-child(1):hover {
+    background-color: #3e8e41;
+}
+
+.buttons.answers button:nth-child(2) {
+    background-color: #2196F3; /* Blue */
+}
+.buttons.answers button:nth-child(2):hover {
+    background-color: #1976D2;
+}
+
+.buttons.answers button:nth-child(3) {
+    background-color: #FF9800; /* Orange */
+}
+.buttons.answers button:nth-child(3):hover {
+    background-color: #e68900;
+}
+
+.buttons.answers button:nth-child(4) {
+    background-color: #F44336; /* Red */
+}
+.buttons.answers button:nth-child(4):hover {
+    background-color: #d32f2f;
+}
+
 
 /* Results Section */
 #results-menu-container {
