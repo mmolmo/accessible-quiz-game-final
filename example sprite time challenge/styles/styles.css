@@ -439,31 +439,31 @@ button:active {
 
 /* Example colors for each button */
 .buttons.answers button:nth-child(1) {
-    background-color: #4CAF50; /* Green */
+    background-color: var(--primary-color); /* Green */
 }
 .buttons.answers button:nth-child(1):hover {
-    background-color: #3e8e41;
+    background-color: var(--secondary-color);
 }
 
 .buttons.answers button:nth-child(2) {
-    background-color: #2196F3; /* Blue */
+    background-color: #01A4C5; /* Blue */
 }
 .buttons.answers button:nth-child(2):hover {
-    background-color: #1976D2;
+    background-color: #00324f;
 }
 
 .buttons.answers button:nth-child(3) {
-    background-color: #FF9800; /* Orange */
+    background-color: #C50180; /* Orange */
 }
 .buttons.answers button:nth-child(3):hover {
-    background-color: #e68900;
+    background-color: #5a004c;
 }
 
 .buttons.answers button:nth-child(4) {
-    background-color: #F44336; /* Red */
+    background-color: #F0A51B; /* Red */
 }
 .buttons.answers button:nth-child(4):hover {
-    background-color: #d32f2f;
+    background-color: #974c00;
 }
 
 
