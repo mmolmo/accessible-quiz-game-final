@@ -198,39 +198,18 @@ const questions = [
 
     let soundFXVolumeSlider = document.querySelector("#sound-fx-volume-slider");
     const valueDisplay = document.getElementById('sound-fx-volume-value');
-    soundFXVolumeSlider.addEventListener("change", function(e) {
-        const soundFXVolume = e.currentTarget.value / 100;
-        let soundFXVolumeIcon = e.currentTarget.nextElementSibling;
-        soundfx.correctAnswer.volume = soundFXVolume;
-        soundfx.wrongAnswer.volume = soundFXVolume;
-        console.log("Sound fx volume: " + soundfx.correctAnswer.volume);
-
-        // Determine which icon to display based on volume level
-        let iconPath = volumeIcons.mid; // Default to "off"
-        if (soundFXVolume == 0) {
-            iconPath = volumeIcons.off;
-        } else if (soundFXVolume > 0 && soundFXVolume <= 0.33) {
-            iconPath = volumeIcons.low;
-        } else if (soundFXVolume > 0.33 && soundFXVolume <= 0.66) {
-            iconPath = volumeIcons.mid;
-        } else if (soundFXVolume > 0.66) {
-            iconPath = volumeIcons.high;
-        }
-
-        // Update the icon dynamically
-        soundFXVolumeIcon.innerHTML = `<img src="${iconPath}" alt="Volume icon">`;
-
-        const val = soundFXVolumeSlider.value;
-        valueDisplay.textContent = `${val}%`;
-
-        valueDisplay.classList.add('active');
-    })
-
-    let musicVolumeSlider = document.querySelector("#music-volume-slider");
     const musicvalueDisplay = document.getElementById('music-volume-value');
-    musicVolumeSlider.addEventListener("change", function(e) {
+    let musicVolumeSlider = document.querySelector("#music-volume-slider");
+
+    // Attach listener
+    soundFXVolumeSlider.addEventListener("change", (e) => handleVolumeChange(e, e.currentTarget));
+    musicVolumeSlider.addEventListener("change", (e) => handleMusicVolumeChange(e, e.currentTarget));
+    
+
+    function handleMusicVolumeChange(e, sliderElement) {
         const musicVolume = e.currentTarget.value / 100;
-        let musicVolumeIcon = e.currentTarget.nextElementSibling;
+        let musicVolumesetting = sliderElement.parentElement.nextElementSibling;
+        let musicVolumeIcon = musicVolumesetting.firstElementChild;
         // Set the actual volume of the music
         music.beep.volume = musicVolume;
         console.log("Music fx volume: " + music.beep.volume);
@@ -238,25 +217,37 @@ const questions = [
         // Determine which icon to display based on volume level
         let iconPath = volumeIcons.mid; // Default to "off"
 
-        
-
-/*
-    // Update the icon dynamically
-    musicVolumeIcon.innerHTML = `<img src="${iconPath}" alt="Volume icon">`;*/
-
         // Find the correct icon by checking the volume thresholds
         const volumeIcon = volumeIcon2.find(icon => musicVolume >= icon.volume) || volumeIcon2[volumeIcon2.length - 1];
 
         // Get the span and set the icon dynamically
-        const volumeIconSpan = e.currentTarget.nextElementSibling;
-        volumeIconSpan.innerHTML = `<img src="${volumeIcon.image}" alt="${volumeIcon.alt}" />`;
-    
+        musicVolumeIcon.innerHTML = `<img src="${volumeIcon.image}" alt="${volumeIcon.alt}" />`;
+
         const val = musicVolumeSlider.value;
         musicvalueDisplay.textContent = `${val}%`;
 
-        musicvalueDisplay.classList.add('active');
-    })
-    
+        musicvalueDisplay.classList.add('active');   
+    }
+
+    function handleVolumeChange(e, sliderElement) {
+        const soundFXVolume = sliderElement.value / 100;
+        let soundFXVolumesetting = sliderElement.parentElement.nextElementSibling;
+        let soundFXVolumeIcon = soundFXVolumesetting.firstElementChild;
+
+        soundfx.correctAnswer.volume = soundFXVolume;
+        soundfx.wrongAnswer.volume = soundFXVolume;
+
+        let iconPath = volumeIcons.mid;
+        // Find the correct icon by checking the volume thresholds
+        const volumeIcon = volumeIcon2.find(icon => soundFXVolume >= icon.volume) || volumeIcon2[volumeIcon2.length - 1];
+
+        soundFXVolumeIcon.innerHTML = `<img src="${volumeIcon.image}" alt="${volumeIcon.alt}">`;
+
+        const val = sliderElement.value;
+        valueDisplay.textContent = `${val}%`;
+        valueDisplay.classList.add('active');
+    }
+
     //Functions
     showMainMenu();
     returnToSettingsMenuButton.addEventListener("click", showSettingsMenu);
