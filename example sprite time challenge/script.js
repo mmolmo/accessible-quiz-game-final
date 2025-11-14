@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const characterImgContainer = document.getElementById("character-img-container");
     const characterDialogue = document.getElementById("character-dialogue");
     const characterContainer = document.getElementById("character-container");
+    const mainMenuTimerDisplay = document.getElementById("mainmenu-timer-display");
     
     //Game Navigation Buttons
     const startQuizButton = document.getElementById("start-quiz-btn");
@@ -145,7 +146,7 @@ const questions = [
     //Sounds
     const soundfx = {
         correctAnswer: new Audio("./assets/sounds/notification-5-140376.mp3"),
-        wrongAnswer: new Audio("./assets/sounds/wrong-answer-129254.mp3"),
+        wrongAnswer: new Audio("./assets/sounds/wronganswer-37702.mp3"),
         celebration: new Audio("./assets/sounds/celebration-129255.mp3"),
         selectAnswer: new Audio("./assets/sounds/video-game-menu-click-sounds2.mp3")
     };
@@ -185,14 +186,14 @@ const questions = [
     };
 
     
-    document.querySelectorAll('input[type="range"]').forEach(slider => {
+document.querySelectorAll('input[type="range"]').forEach(slider => {
   const updateGradient = () => {
         const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
         slider.style.background = `linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) ${val}%, var(--bg-secondary-color) ${val}%, var(--bg-secondary-color) 100%)`;
     };
     slider.addEventListener('input', updateGradient);
     updateGradient();
-    });
+});
 
 
 
@@ -260,6 +261,7 @@ const questions = [
         mainNavMenu.hidden = true;
         startQuizButton.hidden=true;
         returnToSettingsMenuButton.hidden=true;
+        mainMenuTimerDisplay.hidden = true;
 
         quizMenuContainer.hidden = true;
         resultsMenuContainer.hidden = true;
@@ -294,17 +296,22 @@ const questions = [
         characterContainer.hidden = false;
         mainNavMenu.hidden = false;
         
+        mainMenuTimerDisplay.hidden = false;
+        // indicate how much time the suer set on the main page
+        mainMenuTimerDisplay.firstElementChild.firstElementChild.textContent = duration;
+
         startQuizButton.hidden=false;
         returnToSettingsMenuButton.hidden=false;
         
         
-        startQuizButton.textContent = '1. Start Challenge';
+        startQuizButton.innerHTML = '1. Start Challenge <i class="fa-solid fa-play"></i>';
 
         let timer = duration;
         timerDisplay.textContent = `Time Left: ${timer} seconds`;
         console.log(characterGreetings[0].intro[0]);
         updateCharacterExpression("neutral");
         updateCharacterDialogue(characterGreetings[0].intro[0]);
+        
     }
 
     //Starts the quiz and hides certain elements
@@ -316,6 +323,7 @@ const questions = [
         settingsMenuContainer.hidden = true;
         mainNavMenu.hidden = true;
         resultsMenuContainer.hidden = true;
+        mainMenuTimerDisplay.hidden = true;
 
         progressBarContainer.hidden = false;
 
@@ -353,6 +361,8 @@ const questions = [
         duration = parseInt(timerDuration.value);
         //console.log(duration);
     });
+
+    
 
     //Runs the quiz if the questions havent finished answering.
     async function runQuiz() {
@@ -525,16 +535,16 @@ function endQuiz() {
     //console.log("Practicemode " + practiceMode.checked);
     //console.log("Failsafe " + failSafe.checked);
 
-    startQuizButton.textContent = '1. Play Again';
+    startQuizButton.innerHTML = '1. Play Again <i class="fa-solid fa-play"></i>';
 
     if (practiceMode.checked) {
-        score = 90;
+        score = 0;
         updateCharacterDialogue(
-            `Challenge Completed in Practice Mode! No penalties. \n You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
+            `\n You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. <br> Challenge Completed in Practice Mode! No penalties.  `
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", caption: "No Reward", alt: "No Reward", role: "img"};
+        const reward = rewards.find(r => score >= r.score) || { image: "./assets/sprites/rewards/practicebadge.png", caption: "No Reward", alt: "No Reward", role: "img"};
         rewardsContainer.innerHTML = `
-            <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description">
+            <img src="./assets/sprites/rewards/practicebadge.png" alt="${reward.alt}" role="img", aria-describedby="rewards-description">
             <figcaption id="rewards-description">   
                 ${reward.caption}
             </figcaption>
@@ -546,9 +556,9 @@ function endQuiz() {
             score = score;
         }
         updateCharacterDialogue(
-           `Challenge Completed in Failsafe Mode - Progress Unaffected. \n You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
+           `You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. <br> Challenge Completed in Failsafe Mode - Minimum Progress guaranteed. `
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", caption: "No Reward", alt: "No Reward", role: "img"};
+        const reward = rewards.find(r => score >= r.score) || { image: "./assets/sprites/rewards/rejected.png", caption: "No Reward", alt: "No Reward", role: "img"};
         rewardsContainer.innerHTML = `
             <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description" >
             <figcaption id="rewards-description">   
@@ -560,7 +570,7 @@ function endQuiz() {
             `Challenge Completed.
             You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "https://via.placeholder.com/100?text=No+Reward", caption: "No Reward", alt: "No Reward", role: "img"};
+        const reward = rewards.find(r => score >= r.score) || { image: "./assets/sprites/rewards/rejected.png", caption: "No Reward", alt: "No Reward", role: "img"};
         rewardsContainer.innerHTML = `
             <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description"> 
             <figcaption id="rewards-description">
