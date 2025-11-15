@@ -116,18 +116,18 @@ const questions = [
     //Rewards
     const rewards = [
         { 
-            score: 75, 
+            score: 90, 
             caption: "Gold Reward",
             image: "./assets/sprites/rewards/1st-place-medal.png", 
             alt: "Gold Reward" 
         },
         { 
-            score: 60, 
+            score: 70, 
             caption: "Silver Reward",
             image: "./assets/sprites/rewards/2nd-place-medal.png", 
             alt: "Silver Reward" },
         { 
-            score: 30, 
+            score: 25, 
             caption: "Bronze Reward",
             image: "./assets/sprites/rewards/3rd-place-medal.png", 
             alt: "Bronze Reward" 
@@ -371,7 +371,9 @@ document.querySelectorAll('input[type="range"]').forEach(slider => {
                 const questionResult = await handleQuestionCycle();
                 
                 // Break the loop if game is ended by time or all questions answered
+                console.log("Question Result: " + questionResult);
                 if (questionResult === 'gameEnded' || questionResult === 'timeUp') {
+                    endQuiz();
                     break;
                 }
             }
@@ -381,6 +383,7 @@ document.querySelectorAll('input[type="range"]').forEach(slider => {
                 console.log("All questions answered. Moving to results.");
                 endQuiz();
             }
+
         } catch (error) {
             console.error("Quiz error:", error);
             endQuiz();
@@ -393,7 +396,7 @@ document.querySelectorAll('input[type="range"]').forEach(slider => {
         const questionData = questions[currentQuestionIndex];
        
         if (selectedAnswer === questionData.correct) {
-            score += timer;
+            // score += timer;
             correctAnswers++;
             playSound(soundfx.correctAnswer);
             updateCharacterDialogue(questionData.characterDialogue.correct);
@@ -412,8 +415,8 @@ document.querySelectorAll('input[type="range"]').forEach(slider => {
                 // Check if game should end
                 if (currentQuestionIndex >= questions.length) {
                     console.log("Current Question: " + currentQuestionIndex);
-                    console.log("All questions answered. Moving to results.");
-                    endQuiz();
+                    // console.log("All questions answered. Moving to results.");
+                    // endQuiz();
                     resolve('gameEnded');
                 } else {
                     // Continue with the next question
@@ -439,9 +442,8 @@ document.querySelectorAll('input[type="range"]').forEach(slider => {
                 // Check if time is up
                 if (timer <= 0) {
                     clearInterval(timerIntervalId); // Stop the interval first
-                    console.log("time's up. Moving to results.");
+                    // console.log("time's up. Moving to results.");
                     resolve('timeUp'); // Resolve before ending quiz
-                    endQuiz(); // Call endQuiz after resolving
                     return;
                 }
             }, 1000);
@@ -532,50 +534,68 @@ function endQuiz() {
         ? "Good job! You did well!"
         : "Keep trying! Practice makes perfect.";
 
-    //console.log("Practicemode " + practiceMode.checked);
-    //console.log("Failsafe " + failSafe.checked);
-
     startQuizButton.innerHTML = '1. Play Again <i class="fa-solid fa-play"></i>';
 
+    
+    speedRatio = timer / duration
+    correctPoints = correctAnswers * 25
+    finalScore = Math.round((correctPoints + (speedRatio * 25)));
+
+    console.log("time left:", timer);
+    console.log("speed ratio", speedRatio);
+    console.log("correct points:", correctPoints);
+    console.log("final score:", finalScore);
+
+    let score = finalScore;
+
     if (practiceMode.checked) {
-        score = 0;
+        finalScore = 0;
+
         updateCharacterDialogue(
-            `\n You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. <br> Challenge Completed in Practice Mode! No penalties.  `
+            `\n You got ${correctAnswers} out of ${questions.length} correct and your score is ${finalScore}. <br> Challenge Completed in Practice Mode! No penalties.  `
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "./assets/sprites/rewards/practicebadge.png", caption: "No Reward", alt: "No Reward", role: "img"};
-        rewardsContainer.innerHTML = `
-            <img src="./assets/sprites/rewards/practicebadge.png" alt="${reward.alt}" role="img", aria-describedby="rewards-description">
-            <figcaption id="rewards-description">   
-                ${reward.caption}
-            </figcaption>
-        `;
+        const rewardLevel = "none";
+        displayReward(rewardLevel);
+
     } else if (failSafe.checked) {
-        if (correctAnswers <= 1) {
-            score = 30
-        } else {
-            score = score;
-        }
+
+        // Always guarantee at least 25 points in failsafe mode
+        let safeScore = Math.max(finalScore, 25);
+        finalScore = safeScore;
+
         updateCharacterDialogue(
-           `You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. <br> Challenge Completed in Failsafe Mode - Minimum Progress guaranteed. `
+           `You got ${correctAnswers} out of ${questions.length} correct and your score is ${finalScore}. <br> Challenge Completed in Failsafe Mode - Minimum Progress guaranteed. `
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "./assets/sprites/rewards/rejected.png", caption: "No Reward", alt: "No Reward", role: "img"};
-        rewardsContainer.innerHTML = `
-            <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description" >
-            <figcaption id="rewards-description">   
-                ${reward.caption}
-            </figcaption>
-        `;
+
+        console.log("Final score with failsafe:", finalScore);
+
+        console.log("Evaluating reward for score:", finalScore, "and correct answers:", correctAnswers);
+        
+        let rewardLevel = "";
+
+        if (correctAnswers >= 0 && correctAnswers < 2) { 
+            let failSafeReward = "bronze";
+            rewardLevel = failSafeReward;
+            // console.log("Failsafe reward level:", failSafeReward);
+        } else {
+            let failSafeReward = evaluateReward(correctAnswers, finalScore);
+            rewardLevel = failSafeReward;
+            // console.log("Failsafe reward level:", failSafeReward);
+        }
+
+        displayReward(rewardLevel);
+
     } else {
+
+        // Display
         updateCharacterDialogue(
             `Challenge Completed.
-            You got ${correctAnswers} out of ${questions.length} correct and your score is ${score}. ${scoreMessage}`
+            You got ${correctAnswers} out of ${questions.length} correct and your score is ${finalScore}.`
         );
-        const reward = rewards.find(r => score >= r.score) || { image: "./assets/sprites/rewards/rejected.png", caption: "No Reward", alt: "No Reward", role: "img"};
-        rewardsContainer.innerHTML = `
-            <img src="${reward.image}" alt="${reward.alt}" role="img", aria-describedby="rewards-description"> 
-            <figcaption id="rewards-description">
-                ${reward.caption}
-            </figcaption>`;
+
+        console.log("Evaluating reward for score:", finalScore, "and correct answers:", correctAnswers);
+        const rewardLevel = evaluateReward(correctAnswers, finalScore);
+        displayReward(rewardLevel);
     }
 
 }
@@ -584,6 +604,62 @@ function endQuiz() {
 function updateCharacterDialogue(dialogue) {
     characterDialogue.textContent = dialogue;
 }
+
+function evaluateReward(correctAnswers, finalScore) {
+    // 3/3 correct
+    if (correctAnswers === 3) {
+        if (finalScore >= 90) return "gold";
+        if (finalScore >= 75) return "silver";
+        // Always at least bronze
+        return "bronze";
+    }
+
+    // 2/3 correct
+    if (correctAnswers === 2) {
+        if (finalScore >= 70) return "silver";
+        if (finalScore >= 50) return "bronze";
+        return "none";
+    }
+
+    // 1/3 correct
+    if (correctAnswers === 1) {
+        if (finalScore >= 30) return "bronze";
+        return "none";
+    }
+
+    // 0/3 correct
+    return "none";
+}
+
+function displayReward(rewardLevel) {
+    // Determine reward
+
+    // Map reward strings to existing reward objects
+    let reward;
+    switch (rewardLevel) {
+        case "gold":
+            reward = rewards.find(r => r.caption.includes("Gold"));
+            break;
+        case "silver":
+            reward = rewards.find(r => r.caption.includes("Silver"));
+            break;
+        case "bronze":
+            reward = rewards.find(r => r.caption.includes("Bronze"));
+            break;
+        default:
+            reward = { 
+                image: "./assets/sprites/rewards/rejected.png",
+                caption: "No Reward",
+                alt: "No Reward"
+            };
+    }
+    
+    rewardsContainer.innerHTML = `
+        <img src="${reward.image}" alt="${reward.alt}" role="img" aria-describedby="rewards-description">
+        <figcaption id="rewards-description">${reward.caption}</figcaption>
+    `;
+}
+
 
 //Manages sounds
 function playSound(sound) {
