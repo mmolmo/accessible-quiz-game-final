@@ -497,6 +497,113 @@ button:active {
     box-shadow: var(--card-shadow);
 }
 
+/* tutorial menu styling */
+
+/* table */
+
+td[rowspan] {
+  vertical-align: top;
+}
+
+/* Tutorial Menu Styling */
+#tutorial-menu-container {
+    background-color: var(--bg-secondary-color);
+    border-radius: var(--border-radius);
+    padding: 20px 25px;
+    box-shadow: var(--box-shadow-elevation-1);
+    border: 3px solid #7584FF;;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Title */
+#tutorial-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+/* Section Headings */
+#tutorial-menu-container h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+
+/* Subheadings (like “1. Correct Question Score”) */
+#tutorial-menu-container h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-top: 15px;
+    color: var(--secondary-color);
+}
+
+/* Paragraphs */
+#tutorial-menu-container p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+/* Lists */
+#tutorial-menu-container ul {
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+#tutorial-menu-container li {
+    margin-bottom: 6px;
+}
+
+/* Rewards Table */
+#rewards-scoring-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background-color: var(--bg-primary-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-elevation-1);
+}
+
+#rewards-scoring-table th,
+#rewards-scoring-table td {
+    padding: 10px;
+    border-bottom: 2px solid var(--bg-tert-color);
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+#rewards-scoring-table th {
+    background: var(--primary-color);
+    color: var(--text-light);
+    font-weight: 700;
+}
+
+#rewards-scoring-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Highlighted table rows (optional subtle enhancement) */
+#rewards-scoring-table tbody tr:nth-child(even) {
+    background-color: var(--bg-secondary-color);
+}
+
+/* Emphasis for key information */
+#tutorial-menu-container strong {
+    color: var(--accent-primary);
+}
+
+/* Make the whole section feel structured */
+#tutorial-menu-container > *:not(:last-child) {
+    margin-bottom: 12px;
+}
+
+
 /* Navigation */
 #main-navmenu-container {
     width: 100%;

@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const settingsMenuContainer = document.getElementById("settings-menu-container");
     const quizMenuContainer = document.getElementById("quiz-menu-container");
     const mainNavMenu = document.getElementById("main-navmenu-container");
+    const tutorialMenu = document.getElementById("tutorial-menu-container");
     
     //Settings options
     const settingsTitle = document.getElementById("settings-title");
@@ -34,13 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const startQuizButton = document.getElementById("start-quiz-btn");
     const returnMainMenuButton = document.getElementById("return-main-menu-btn");
     const returnToSettingsMenuButton = document.getElementById("return-to-settings-menu-btn");
+    const returnMainMenuButtonExternal = document.getElementById("return-main-menu-btn-external");
+    const tutorialMenuButton = document.getElementById("tutorial-menu-btn");
 
     //Character Expressions and Greetings
-    /*const characterExpressions = {
-        neutral: "https://via.placeholder.com/150?text=Neutral",
-        joyful: "https://via.placeholder.com/150?text=Joyful",
-        encouraging: "https://via.placeholder.com/150?text=Encouraging",
-    };*/
 
     const characterExpressions = {
         neutral: "./assets/sprites/smile.png",
@@ -257,6 +255,7 @@ document.querySelectorAll('input[type="range"]').forEach(slider => {
         //Hide Character, nav, quiz and results elements
         characterContainer.hidden = true;
         progressBarContainer.hidden = true;
+        tutorialMenu.hidden = true;
 
         mainNavMenu.hidden = true;
         startQuizButton.hidden=true;
@@ -278,8 +277,39 @@ document.querySelectorAll('input[type="range"]').forEach(slider => {
         settingsTitle.focus();        
     };
 
+    tutorialMenuButton.addEventListener("click", showTutorialMenu);
+
+    function showTutorialMenu() {
+        //Hide Character, nav, quiz and results elements
+        characterContainer.hidden = true;
+        progressBarContainer.hidden = true;
+        settingsMenuContainer.hidden = true;
+
+        // mainNavMenu.hidden = true;
+        startQuizButton.hidden=true;
+        tutorialMenuButton.hidden=true;
+        mainMenuTimerDisplay.hidden = true;
+
+        quizMenuContainer.hidden = true;
+        resultsMenuContainer.hidden = true;
+
+        //Show tutorial elements
+        returnMainMenuButtonExternal.hidden=false;
+        returnToSettingsMenuButton.hidden=false;
+
+        tutorialMenu.hidden = false;
+
+        //console.log(mainNavMenu.hidden);
+        //console.log(characterContainer);
+        //console.log(settingsTitle);
+
+        // settingsTitle.focus();        
+    };
+
+
     //Shows the Main Menu
     returnMainMenuButton.addEventListener("click", showMainMenu);
+    returnMainMenuButtonExternal.addEventListener("click", showMainMenu);
 
     function showMainMenu() {
         console.log(mainNavMenu);
@@ -289,7 +319,8 @@ document.querySelectorAll('input[type="range"]').forEach(slider => {
         resultsMenuContainer.hidden = true;
         quizMenuContainer.hidden = true;
         timerDisplay.hidden = true;
-        returnMainMenuButton.hidden=true;
+        returnMainMenuButtonExternal.hidden=true;
+        tutorialMenu.hidden = true;
 
         progressBarContainer.hidden = true;
         
@@ -302,7 +333,7 @@ document.querySelectorAll('input[type="range"]').forEach(slider => {
 
         startQuizButton.hidden=false;
         returnToSettingsMenuButton.hidden=false;
-        
+        tutorialMenuButton.hidden=false;
         
         startQuizButton.innerHTML = '1. Start Challenge <i class="fa-solid fa-play"></i>';
 
@@ -552,7 +583,9 @@ function endQuiz() {
         finalScore = 0;
 
         updateCharacterDialogue(
-            `\n You got ${correctAnswers} out of ${questions.length} correct and your score is ${finalScore}. <br> Challenge Completed in Practice Mode! No penalties.  `
+            `Practice Complete! 
+            You got ${correctAnswers} out of ${questions.length} correct with a final score of <strong>${finalScore}</strong>. 
+            Keep it up—no pressure here!`
         );
         const rewardLevel = "none";
         displayReward(rewardLevel);
@@ -564,7 +597,8 @@ function endQuiz() {
         finalScore = safeScore;
 
         updateCharacterDialogue(
-           `You got ${correctAnswers} out of ${questions.length} correct and your score is ${finalScore}. <br> Challenge Completed in Failsafe Mode - Minimum Progress guaranteed. `
+           `Challenge Completed!
+           You got ${correctAnswers} out of ${questions.length} correct with a final score of <strong>${finalScore}</strong> — and a guaranteed reward! ${scoreMessage} `
         );
 
         console.log("Final score with failsafe:", finalScore);
@@ -589,8 +623,8 @@ function endQuiz() {
 
         // Display
         updateCharacterDialogue(
-            `Challenge Completed.
-            You got ${correctAnswers} out of ${questions.length} correct and your score is ${finalScore}.`
+            `Challenge Completed!
+            You got ${correctAnswers} out of ${questions.length} correct with a final score of <strong>${finalScore}</strong>. ${scoreMessage}`
         );
 
         console.log("Evaluating reward for score:", finalScore, "and correct answers:", correctAnswers);

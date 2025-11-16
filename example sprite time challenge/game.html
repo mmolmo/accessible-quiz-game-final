@@ -8,7 +8,7 @@
   <script src="https://kit.fontawesome.com/c90003398c.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <header id="header" aria-labelledby="header" >
+  <header id="header" aria-labelledby="challenge-title" >
     <h1 id="challenge-title" role="heading" aria-level="1" aria-live="polite">Rapid Knowledge Challenge</h1>
     
     <div id = "progress-bar-container">
@@ -44,10 +44,10 @@
             <input type="checkbox" id="practice-mode" role="checkbox" aria-describedby="practice-mode-desc">    
           </div>
           <!-- Toggle Timer -->
-          <div class="setting option">
+          <!-- <div class="setting option">
             <label for="toggle-timer">Enable Timer</label>
             <input type="checkbox" id="toggle-timer" checked role="checkbox">
-          </div> 
+          </div>  -->
           
           <!-- Fail-Safe Mode -->
           <div class="setting option" role="group">
@@ -101,7 +101,7 @@
       </form>
     </section>
 
-    <section id="character-container" role="region" hidden>
+    <section id="character-container" role="region" hidden aria-labelledby="character-dialogue">
       <figure id="character-img-container" aria-hidden="true">
         <img id="character-img" 
         src="https://via.placeholder.com/150?text=Neutral" 
@@ -119,8 +119,8 @@
       <small>(you can change the quiz duration in the settings menu)</small>
     </section>
     
-    <section id="quiz-menu-container" aria-labelledby="quiz-menu-container" role="region">
-      <h2>Quiz</h2>
+    <section id="quiz-menu-container" aria-labelledby="quiz-title" role="region">
+      <h2 id="quiz-title">Quiz</h2>
       <!-- <h2 aria-labelledby="Quiz Menu Title">Quiz Menu</h2>-->
       <div id="quiz-game-wrapper" role="region">
           <!--<div id="timer">Time Left: <span id="time">30</span>s</div>-->
@@ -133,8 +133,8 @@
       </div>
     </section>
 
-    <section id="results-menu-container" hidden role="region">
-      <h2>Rewards</h2>
+    <section id="results-menu-container" hidden role="region" aria-labelledby="results-title" >
+      <h2 id="results-title">Rewards</h2>
       <p id="score"></p>
       <figure id="rewards-container" role="contentinfo">
         <img 
@@ -149,12 +149,108 @@
       </figure>
       <!--<button id="restart-btn">Play Again</button>-->
     </section>
+
+    <section id="tutorial-menu-container" hidden role="region" aria-labelledby="tutorial-title">
+      <h2 id="tutorial-title"><i class="fa-solid fa-circle-info"></i> What is this Game? </h2>
+        <p>
+          <strong>Rapid Knowledge Challenge</strong> is a fast-paced, timed quiz where you answer 3 questions before time runs out! The default timer is 30 seconds, but you can adjust it in the <strong>Settings Menu</strong>(between 20–120 seconds). Answer quickly and accurately to earn rewards!
+        </p>
+      <h3>How To Play <i class="fa-solid fa-gamepad"></i></h3>
+        <ul>
+          <li><p><strong>Answer questions</strong> by clicking the correct choice or pressing <strong>1–4</strong> and hitting <strong>Enter</strong>.</p></li>
+          <li><p><strong>Complete the quiz</strong> before time runs out.</p></li>
+          <li><p><strong>Earn rewards</strong> based on your <strong>accuracy</strong> and <strong>speed</strong>!</p></li>
+        </ul>
+      <h3>Scoring System <i class="fa-solid fa-chart-simple"></i></h3>
+        <p>Your final score is calculated in two parts:</p>
+        <h4>1. Correct Question Score <i class="fa-solid fa-house"></i></h4>
+          <p>Each correct answer earns <strong>25 points:</strong></p>
+          <ul>
+            <li><p><strong>3 correct:</strong> 75 points</p></li>
+            <li><p><strong>2 correct:</strong> 50 points</p></li>
+            <li><p><strong>1 correct:</strong> 25 points</p></li>
+            <li><p><strong>0 correct:</strong> 0 points</p></li>
+          </ul>
+        <h4>2. Speed Bonus <i class="fa-solid fa-check-circle"></i></h4>
+          <p>The faster you finish, the more bonus points you earn!</p>
+          <ul>
+            <li><p><strong>Speed Ratio</strong> = (Time Left) / (Total Duration)</p></li>
+            <li><p><strong>Speed Bonus</strong> = Speed Ratio × 30 (max 30 points)</p></li>
+          </ul>
+          <p>Example: If you set the timer to 60 seconds and finish with 30 seconds left, your speed ratio is <strong>0.5</strong>, earning you <strong>15 bonus points</strong>.</p>
+          <p>Speed Bonus Formula:</p>
+          <p><strong>Final Score = Correct Points + Speed Bonus</strong></p>
+          <p><em>Max possible score: 105 (75 + 30)</em></p>
+
+      <h3>Reward Tiers <i class="fa-solid fa-award"></i></h3>
+        <p>Your reward depends on your final score:</p>
+        <table id="rewards-scoring-table">
+          <thead>
+            <tr>
+              <th scope="col">Correct Answers</th>
+              <th scope="col">Reward</th>
+              <th scope="col">Score Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="3">3/3</td>
+              <td>Gold</td>
+              <td>≥ 90</td>
+            </tr>
+            <tr>
+              <td>Silver</td>
+              <td>≥ 75</td>
+            </tr>
+            <tr>
+              <td>Bronze</td>
+              <td>≥ 60 (guaranteed)</td>
+            </tr>
+            <tr>
+              <td rowspan="2">2/3</td>
+              <td>Silver</td>
+              <td>≥ 70</td>
+            </tr>
+            <tr>
+              <td>Bronze</td>
+              <td>≥ 50</td>
+            </tr>
+            <tr>
+              <td rowspan="2">1/3</td>
+              <td>Bronze</td>
+              <td>≥ 25</td>
+            </tr>
+            <tr>
+              <td>No reward</td>
+              <td>–</td>
+            </tr>
+            <tr>
+              <td>0/3</td>
+              <td>No reward</td>
+              <td>–</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Note: If you answer all 3 questions correctly, you always earn at least <strong>Bronze</strong>, no matter how slow!</p>
+      <h3>Settings and Customization <i class="fa-solid fa-gear"></i></h3>
+        <ul>
+          <li><p><strong>Adjust the timer</strong> (20–120 seconds) to change difficulty.</p></li>
+          <li><p><strong>Practice Mode:</strong> Play without rewards to improve your skills.</p></li>
+          <li><p><strong>FailSafe Mode:</strong> Guarantees a <strong>Bronze reward</strong> if you meet the minimum correct answers, even if you run out of time.</p></li>
+          <li><p><strong>Customize audio:</strong> Toggle game music and SFX volume.</p></li>
+        </ul>
+    </section>
   </main>
 
   <nav id="main-navmenu-container" aria-labelledby="main-navmenu-container" role="region" aria-label="Navigation Menu">
     <div class = "buttons settings" role="group">
       <button id="start-quiz-btn">1. Start Challenge <i class="fa-solid fa-play"></i></button>
       <button id="return-to-settings-menu-btn">2. Settings Menu <i class="fa-solid fa-gear"></i></button>
+      <button id="tutorial-menu-btn">3. How to Play <i class="fa-solid fa-circle-question"></i></button>
+      <button id="return-main-menu-btn-external" type="button"
+        aria-label="Return to Main Menu">
+          Return to Main Menu <i class="fa-solid fa-house"></i>
+      </button>
     </div>
   </nav>
 
